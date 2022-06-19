@@ -15,6 +15,9 @@
 
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
+        <link rel="stylesheet" href="{{ asset('css/sub.css') }}">
+        <script src="https://cdn.tailwindcss.com"></script>
+
     </head>
     <body>
         <div class="font-sans text-gray-900 antialiased">

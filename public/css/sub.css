@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&family=Kosugi&display=swap');
+
+a, h1, h2, h3, li, p, th, td {
+  font-family: 'Kosugi', sans-serif;
+  font-size: 16px;
+}
+
+.home-container {
+  max-width: 1200px;
+  height: 480px;
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0px;
+  background-image: url("/home-image.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.front-logo {
+  font-family: 'Jua', sans-serif;
+  background-color: rgba(255,255,255,0.8);
+}
+
+.btn {
+  color: #fff;
+  font-weight: 700;
+  background-color: #2f855a;
+  transition: 0.3s;
+  border-radius: 0.5rem;
+}
+
+.btn:visited {
+  color: #fff;
+}
+
+.btn:hover {
+  color: #fff;
+  opacity: 0.7;
+}
+
+.btn-white {
+  color: #2f855a;
+  background: white;
+  border: solid 2px #2f855a;
+}
+
+.btn-white:visited {
+  color: #2f855a;
+}
+
+.btn-white:hover {
+  color: #fff;
+  background: #276749;
+}
+
+.btn-login, .btn-register {
+  width:250px;
+  box-sizing: border-box;
+}

@@ -7,6 +7,7 @@ use Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Student;
 use App\Http\Requests\StudentRequest;
+use Vinkla\Hashids\Facades\Hashids;
 
 class StudentController extends Controller
 {
@@ -21,10 +22,8 @@ class StudentController extends Controller
     public function index()
     {
         $auths = Auth::user();
-        $st_groups = $auths->student_groups->pluck('name', 'id')->toArray();
-        $students = $auths->students->where('expired_date', '=', NULL);
+        $students = $auths->students->where('expired_flg', null);
         return view('student.index', [
-            'st_groups' => $st_groups,
             'students' => $students,
             'grades' => $this->grades,
         ]);
@@ -45,15 +44,15 @@ class StudentController extends Controller
         $auths = Auth::user();
         $auths->students()->create($request->all());
 
-        return redirect()
-            ->route('student.index')
-            ->with('flash','生徒が登録されました。');
+        session()->flash('flashmessage', '生徒が登録されました。');
+
+        return redirect()->route('student.index');
     }
 
     public function show($id)
     {
         $auths = Auth::user();
-        $student = $auths->students->find($id);
+        $student = $auths->students->find((int) Hashids::decode($id)[0]);
         return view('student.show', [
             'st' => $student,
             'grades' => $this->grades,
@@ -69,7 +68,7 @@ class StudentController extends Controller
     public function edit($id)
     {
         $auths = Auth::user();
-        $student = $auths->students->find($id);
+        $student = $auths->students->find((int) Hashids::decode($id)[0]);
         return view('student.edit', [
             'st' => $student,
             'genders' => $this->genders,
@@ -84,9 +83,15 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StudentRequest $request, $id)
     {
-        //
+        $auths = Auth::user();
+        $auths->students()->find($id)->update($request->all());
+
+        session()->flash('flashmessage', '生徒の情報が更新されました。');
+
+        return redirect()->route('student.index');
+
     }
 
     /**
@@ -97,6 +102,24 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $auths = Auth::user();
+        $auths->students()->find($id)->delete();
+
+        session()->flash('flashmessage', '生徒が削除されました。');
+
+        return redirect()->route('student.index');
+
+    }
+
+    public function expired_index()
+    {
+        $auths = Auth::user();
+        $students = $auths->students
+            ->where('expired_flg', true)
+            ->sortByDesc('expired_date');
+        return view('student.expired_index', [
+            'students' => $students,
+            'grades' => $this->grades,
+        ]);
     }
 }

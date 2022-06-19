@@ -17,9 +17,8 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->date('registered_date');
-            $table->boolean('expired_flag')->default(null);
+            $table->boolean('expired_flg')->nullable()->default(null);
             $table->date('expired_date')->nullable();
-            $table->integer('student_group')->nullable();
             $table->string('family_name');
             $table->string('given_name');
             $table->string('family_name_kana');

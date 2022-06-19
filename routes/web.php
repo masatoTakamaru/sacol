@@ -14,8 +14,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home.index');
+})->name('home.index');
+
+Route::get('/student/expired', [App\Http\Controllers\StudentController::class, 'expired_index'])
+->middleware(['auth'])->name('student.expired_index');
+
+Route::resource('/student', 'App\Http\Controllers\StudentController')
+    ->middleware(['auth']);
+
+Route::resource('/item_master', 'App\Http\Controllers\ItemMasterController')
+    ->middleware(['auth']);
+
+Route::resource('/item', 'App\Http\Controllers\ItemController')
+    ->middleware(['auth']);
+
+Route::resource('/qty', 'App\Http\Controllers\QtyController')
+    ->middleware(['auth']);
 
 Route::middleware([
     'auth:sanctum',

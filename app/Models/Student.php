@@ -39,9 +39,4 @@ class Student extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function student_group()
-    {
-        return $this->belongsTo(StudentGroup::class);
-    }
 }

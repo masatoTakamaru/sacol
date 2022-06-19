@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             QtySeeder::class,
             ItemMasterSeeder::class,
-            StudentGroupSeeder::class,
             ItemSeeder::class,
         ]);
     }
