@@ -20,6 +20,12 @@ Route::get('/', function () {
 Route::get('/student/expired', [App\Http\Controllers\StudentController::class, 'expired_index'])
 ->middleware(['auth'])->name('student.expired_index');
 
+Route::put('/student/{student}/expired_update', [App\Http\Controllers\StudentController::class, 'expired_update'])
+->middleware(['auth'])->name('student.expired_update');
+
+Route::put('/student/{student}/unexpired_update', [App\Http\Controllers\StudentController::class, 'unexpired_update'])
+->middleware(['auth'])->name('student.unexpired_update');
+
 Route::resource('/student', 'App\Http\Controllers\StudentController')
     ->middleware(['auth']);
 

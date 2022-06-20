@@ -68,22 +68,37 @@
     </tbody>
     </table>
     </div>
-    <div class="flex justify-between items-center">
-        <h2 class="mr-4">生徒の退会</h2>
-        <p class="mr-6">生徒を退会者名簿に移動します。</p>
-        <div class="flex items-center">
-            <label class="mr-4" for="expired_date">退会日</label>
-            @if ($st->expired_flg)
-                <input class="border rounded" type="date" name="expired_date" value="{{ old('expired_date') ?? $st->expired_date }}">
-            @else
-                <input class="border rounded" type="date" name="expired_date" value="">
-            @endif
+    @if ($st->expired_flg)
+        <form action="{{ route('student.unexpired_update',['student' => $st->id]) }}" method="POST">
+            @method('PUT')
+            @csrf
+            <div class="flex justify-between items-center">
+                <h2 class="mr-4">退会の取り消し</h2>
+                <p class="mr-6">退会を取り消して，生徒の一覧に戻します。</p>
+                <button class="btn btn-white px-8 py-2"><input type="submit" value="退会を取り消す"></button>
+            </div>
+        </form>
+    @else
+        <form action="{{ route('student.expired_update',['student' => $st->id]) }}" method="POST">
+            @method('PUT')
+            @csrf
+            <div class="flex justify-between items-center">
+                <h2 class="mr-4">生徒の退会</h2>
+                <p class="mr-6">生徒を退会者名簿に移動します。</p>
+                <div class="flex items-center">
+                    <label class="mr-4" for="expired_date">退会日</label>
+                    <input class="border rounded" type="date" name="expired_date" value="">
+                </div>
+            </div>
             @if ($errors->has('expired_date'))
                 <p class="text-red-600">{{ $errors->first('expired_date') }}</p>
             @endif
-        </div>
-    </div>
-    <hr class="mt-4">    
+            <div class="flex justify-end mt-3">
+                <button class="btn btn-white px-8 py-2"><input type="submit" value="退会者名簿に移動する"></button>
+            </div>
+        </form>
+    @endif
+    <hr class="mt-4">
     <form action="{{ route('student.destroy',['student' => $st->id]) }}" method="POST">
         @method('DELETE')
         @csrf

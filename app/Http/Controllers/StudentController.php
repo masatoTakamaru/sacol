@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Student;
 use App\Http\Requests\StudentRequest;
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -91,7 +92,6 @@ class StudentController extends Controller
         session()->flash('flashmessage', '生徒の情報が更新されました。');
 
         return redirect()->route('student.index');
-
     }
 
     /**
@@ -121,5 +121,35 @@ class StudentController extends Controller
             'students' => $students,
             'grades' => $this->grades,
         ]);
+    }
+
+    public function expired_update(Request $request, $id)
+    {
+
+        if (!$request['expired_date']) {
+            $validator = Validator::make($request->all(), []);
+            $validator->errors()->add('expired_date', '退会日を入力してください。');
+            return back()->withInput()->withErrors($validator);
+        } else {
+            $auths = Auth::user();
+            $auths->students()->find($id)->update([
+                'expired_flg' => true,
+                'expired_date' => $request['expired_date'],
+            ]);
+    
+            session()->flash('flashmessage', '生徒を退会者名簿に移動しました。');    
+        }
+
+        return redirect()->route('student.index');
+    }
+
+    public function unexpired_update(Request $request, $id)
+    {
+        $auths = Auth::user();
+        $auths->students()->find($id)->update(['expired_flg' => false]);
+
+        session()->flash('flashmessage', '生徒の退会を取り消しました。');
+
+        return redirect()->route('student.index');
     }
 }
