@@ -160,7 +160,7 @@ return [
         'family_name_kana' => [
             'regex' => '全角カタカナで入力してください。',
         ],
-        'family_name_kana' => [
+        'given_name_kana' => [
             'regex' => '全角カタカナで入力してください。',
         ],
         'guardian_family_name_kana' => [
@@ -169,6 +169,11 @@ return [
         'guardian_given_name_kana' => [
             'regex' => '全角カタカナで入力してください。',
         ],
-
+        'phone1' => [
+            'regex' => '正しい電話番号を入力してください。',
+        ],
+        'phone2' => [
+            'regex' => '正しい電話番号を入力してください。',
+        ],
     ],
 ];

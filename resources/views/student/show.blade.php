@@ -14,10 +14,6 @@
         <td class="pr-2">{{ $grades[$st->grade] }}</td>
     </tr>
     <tr>
-        <td class="pr-4">クラス</td>
-        <td class="pr-2">{{ $st->class_name }}</td>
-    </tr>
-    <tr>
         <td class="pr-4">名前</td>
         <td class="pr-2">{{ $st->family_name }}&nbsp;{{ $st->given_name }}</td>
     </tr>
@@ -34,7 +30,7 @@
         <td class="pr-2">{{ $st->birth_date }}</td>
     </tr>
     <tr>
-        <td class="pr-4">学校</td>
+        <td class="pr-4">学校名</td>
         <td class="pr-2">{{ $st->school_attended }}</td>
     </tr>
     <tr>
@@ -94,7 +90,7 @@
         <div class="flex justify-between items-center mt-10">
             <h2 class="mr-4 text-red-500">生徒の削除</h2>
             <p class="mr-6">生徒は一覧から完全に削除され、もとに戻せません。</p>
-            <button class="btn btn-white px-8 py-2"><input type="submit" value="完全に削除する"></button>
+            <button id="student-delete" class="btn btn-white px-8 py-2"><input type="submit" value="完全に削除する"></button>
         </div>
     </form>
 </x-app-layout>

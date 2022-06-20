@@ -11,7 +11,6 @@
     <thead>
     <tr>
         <th>学年</th>
-        <th>クラス</th>
         <th>名前</th>
         <th>フリガナ</th>
         <th>性別</th>
@@ -22,11 +21,6 @@
     @foreach($students as $st)
         <tr>
             <td class="pr-2">{{ $grades[$st->grade] }}</td>
-            @if ($st->student_group)
-                <td class="pr-2">{{ $st_groups[$st->student_group] }}</td>
-            @else
-                <td></td>
-            @endif
             <td class="pr-2"><a class="text-blue-500 underline" href="{{ route('student.show', ['student' => Hashids::encode($st->id)]) }}">{{ $st->family_name }}&nbsp;{{ $st->given_name }}</a></td>
             <td class="pr-2">{{ $st->family_name_kana }}&nbsp;{{ $st->given_name_kana }}</td>
             <td class="pr-2">{{ $st->gender }}</td>
