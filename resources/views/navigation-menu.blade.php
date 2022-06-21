@@ -18,6 +18,9 @@
                     <x-jet-nav-link href="{{ route('student.index') }}" :active="request()->routeIs('student.*')">
                         生徒
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('item_master.index') }}" :active="request()->routeIs('item_master.*')">
+                        科目
+                    </x-jet-nav-link>
                 </div>
             </div>
 

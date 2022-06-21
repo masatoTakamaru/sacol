@@ -1662,6 +1662,12 @@ select {
 .pr-2 {
   padding-right: 0.5rem;
 }
+.pl-2 {
+  padding-left: 0.5rem;
+}
+.pr-6 {
+  padding-right: 1.5rem;
+}
 .pt-8 {
   padding-top: 2rem;
 }
@@ -1670,12 +1676,6 @@ select {
 }
 .pb-8 {
   padding-bottom: 2rem;
-}
-.pl-2 {
-  padding-left: 0.5rem;
-}
-.pr-6 {
-  padding-right: 1.5rem;
 }
 .pr-8 {
   padding-right: 2rem;
@@ -1688,6 +1688,9 @@ select {
 }
 .text-right {
   text-align: right;
+}
+.text-end {
+  text-align: end;
 }
 .font-sans {
   font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";

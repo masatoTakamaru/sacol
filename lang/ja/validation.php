@@ -151,6 +151,11 @@ return [
         'phone2_relationship' => '続柄',
         'email' => 'メールアドレス',
         'remarks' => '備考',
+        'code' => 'コード',
+        'category' => '種別',
+        'name' => '科目名',
+        'price' => '価格',
+        'description' => '摘要',
     ],
 
     'custom'               => [

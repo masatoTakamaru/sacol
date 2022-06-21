@@ -8,7 +8,6 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StudentRequest;
 
-
 class StudentsTableTest extends TestCase
 {
 
