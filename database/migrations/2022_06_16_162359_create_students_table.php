@@ -25,17 +25,7 @@ return new class extends Migration
             $table->string('given_name_kana');
             $table->string('gender');
             $table->integer('grade');
-            $table->date('birth_date')->nullable();
-            $table->string('school_attended')->nullable();
             $table->string('family_group')->nullable();
-            $table->string('guardian_family_name')->nullable();
-            $table->string('guardian_given_name')->nullable();
-            $table->string('guardian_family_name_kana')->nullable();
-            $table->string('guardian_given_name_kana')->nullable();
-            $table->string('phone1')->nullable();
-            $table->string('phone1_relationship')->nullable();
-            $table->string('phone2')->nullable();
-            $table->string('phone2_relationship')->nullable();
             $table->string('email')->nullable();
             $table->string('remarks')->nullable();
 

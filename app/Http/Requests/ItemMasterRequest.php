@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
 class ItemMasterRequest extends FormRequest
 {
     /**
@@ -31,12 +32,18 @@ class ItemMasterRequest extends FormRequest
         ];
     }
 
-    public function withValidator(Validator $validator)
+    /**
+     * バリデータインスタンスの設定
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
     {
         $validator->sometimes('price',
             ['required', 'integer', 'between:0,999999'],
             function($input) {
-                return $input->category !== 1;
+                return $input->category !== '1';
             });
     }
 }

@@ -26,38 +26,6 @@
         <td class="pr-2">{{ $st->gender }}</td>
     </tr>
     <tr>
-        <td class="pr-4">生年月日</td>
-        <td class="pr-2">{{ $st->birth_date }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">学校名</td>
-        <td class="pr-2">{{ $st->school_attended }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">保護者名</td>
-        <td class="pr-2">{{ $st->guardian_family_name }}&nbsp;{{ $st->guardian_given_name }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">フリガナ</td>
-        <td class="pr-2">{{ $st->guardian_family_name_kana }}&nbsp;{{ $st->guardian_given_name_kana }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">電話番号１</td>
-        <td class="pr-2">{{ $st->phone1 }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">続柄</td>
-        <td class="pr-2">{{ $st->phone1_relationship }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">電話番号２</td>
-        <td class="pr-2">{{ $st->phone2 }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">続柄</td>
-        <td class="pr-2">{{ $st->phone2_relationship }}</td>
-    </tr>
-    <tr>
         <td class="pr-4">メールアドレス</td>
         <td class="pr-2">{{ $st->email }}</td>
     </tr>
@@ -75,7 +43,7 @@
             <div class="flex justify-between items-center">
                 <h2 class="mr-4">退会の取り消し</h2>
                 <p class="mr-6">退会を取り消して，生徒の一覧に戻します。</p>
-                <button class="btn btn-white px-8 py-2"><input type="submit" value="退会を取り消す"></button>
+                <button class="btn-white px-8 py-2"><input type="submit" value="退会を取り消す"></button>
             </div>
         </form>
     @else
@@ -94,7 +62,7 @@
                 <p class="text-red-600">{{ $errors->first('expired_date') }}</p>
             @endif
             <div class="flex justify-end mt-3">
-                <button class="btn btn-white px-8 py-2"><input type="submit" value="退会者名簿に移動する"></button>
+                <button class="btn-white px-8 py-2"><input type="submit" value="退会者名簿に移動する"></button>
             </div>
         </form>
     @endif
@@ -105,7 +73,16 @@
         <div class="flex justify-between items-center mt-10">
             <h2 class="mr-4 text-red-500">生徒の削除</h2>
             <p class="mr-6">生徒は一覧から完全に削除され、もとに戻せません。</p>
-            <button id="student-delete" class="btn btn-white px-8 py-2"><input type="submit" value="完全に削除する"></button>
+            <button id="student-delete" class="btn-white px-8 py-2"><input type="submit" value="完全に削除する"></button>
         </div>
     </form>
+
+    <script>
+        //生徒の削除：確認メッセージ
+        $("#student-delete").on('click', () => {
+            if(!confirm("削除してもよろしいですか？")) {
+                return false;
+            }
+        });
+    </script>
 </x-app-layout>

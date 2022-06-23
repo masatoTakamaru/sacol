@@ -17,10 +17,6 @@
         <th>名前</th>
         <th>フリガナ</th>
         <th>性別</th>
-        <th>電話番号１</th>
-        <th></th>
-        <th>電話番号２</th>
-        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -29,11 +25,7 @@
             <td class="pr-2">{{ $grades[$st->grade] }}</td>
             <td class="pr-2"><a class="text-blue-500 underline" href="{{ route('student.show', ['student' => Hashids::encode($st->id)]) }}">{{ $st->family_name }}&nbsp;{{ $st->given_name }}</a></td>
             <td class="pr-2">{{ $st->family_name_kana }}&nbsp;{{ $st->given_name_kana }}</td>
-            <td class="pr-2">{{ $st->gender }}</td>
-            <td class="pr-2">{{ $st->phone1 }}</td>
-            <td class="pr-2">{{ $st->phone1_relationship }}</td>
-            <td class="pr-2">{{ $st->phone2 }}</td>
-            <td>{{ $st->phone2_relationship }}</td>
+            <td class="pr-2 text-center">{{ $st->gender }}</td>
         </tr>
     @endforeach
     </tbody>

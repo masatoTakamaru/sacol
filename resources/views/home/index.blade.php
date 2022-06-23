@@ -11,7 +11,7 @@
                 @endif
             </div>
             <div class="flex justify-center mt-6">
-                <a href="{{ route('register') }}" class="btn btn-white btn-register py-2 text-center">新規登録はこちらから</a>
+                <a href="{{ route('register') }}" class="btn-white btn-register py-2 text-center">新規登録はこちらから</a>
             </div>
         </div>
     </div>

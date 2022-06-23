@@ -27,7 +27,7 @@
     @foreach($subject_qtys as $e)
         <tr>
             <td class="pr-2">{{ $e->code }}</td>
-            <td class="pr-2"><a class="text-blue-500 underline" href="{{ route('item_master.show', ['item_master' => Hashids::encode($e->id)]) }}">{{ $e->name }}</a></td>
+            <td class="pr-2"><a class="text-blue-500 underline" href="{{ route('item_master.edit', ['item_master' => Hashids::encode($e->id)]) }}">{{ $e->name }}</a></td>
             <td class="text-center">-</td>
             <td class="pr-2">{{ $e->description }}</td>
         </tr>
@@ -42,7 +42,7 @@
     @foreach($subject_singles as $e)
         <tr>
             <td class="pr-2">{{ $e->code }}</td>
-            <td class="pr-2"><a class="text-blue-500 underline" href="{{ route('item_master.show', ['item_master' => Hashids::encode($e->id)]) }}">{{ $e->name }}</a></td>
+            <td class="pr-2"><a class="text-blue-500 underline" href="{{ route('item_master.edit', ['item_master' => Hashids::encode($e->id)]) }}">{{ $e->name }}</a></td>
             <td class="pr-2 text-end">{{ number_format($e->price) }}</td>
             <td class="pr-2">{{ $e->description }}</td>
         </tr>
@@ -57,7 +57,7 @@
     @foreach($charges as $e)
         <tr>
             <td class="pr-2">{{ $e->code }}</td>
-            <td class="pr-2"><a class="text-blue-500 underline" href="{{ route('item_master.show', ['item_master' => Hashids::encode($e->id)]) }}">{{ $e->name }}</a></td>
+            <td class="pr-2"><a class="text-blue-500 underline" href="{{ route('item_master.edit', ['item_master' => Hashids::encode($e->id)]) }}">{{ $e->name }}</a></td>
             <td class="pr-2 text-end">{{ number_format($e->price) }}</td>
             <td class="pr-2">{{ $e->description }}</td>
         </tr>
@@ -72,7 +72,7 @@
     @foreach($discounts as $e)
         <tr>
             <td class="pr-2">{{ $e->code }}</td>
-            <td class="pr-2"><a class="text-blue-500 underline" href="{{ route('item_master.show', ['item_master' => Hashids::encode($e->id)]) }}">{{ $e->name }}</a></td>
+            <td class="pr-2"><a class="text-blue-500 underline" href="{{ route('item_master.edit', ['item_master' => Hashids::encode($e->id)]) }}">{{ $e->name }}</a></td>
             <td class="pr-2 text-end">{{ number_format($e->price) }}</td>
             <td class="pr-2">{{ $e->description }}</td>
         </tr>

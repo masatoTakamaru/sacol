@@ -53,7 +53,7 @@ class StudentController extends Controller
     public function show($id)
     {
         $auths = Auth::user();
-        $student = $auths->students->find((int) Hashids::decode($id)[0]);
+        $student = $auths->students()->find((int) Hashids::decode($id)[0]);
         return view('student.show', [
             'st' => $student,
             'grades' => $this->grades,
@@ -69,7 +69,7 @@ class StudentController extends Controller
     public function edit($id)
     {
         $auths = Auth::user();
-        $student = $auths->students->find((int) Hashids::decode($id)[0]);
+        $student = $auths->students()->find((int) Hashids::decode($id)[0]);
         return view('student.edit', [
             'st' => $student,
             'genders' => $this->genders,

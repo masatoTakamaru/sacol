@@ -18,7 +18,7 @@
 
         <div class="flex justify-center mt-6">
             <button class="btn px-8 py-2 mr-6"><input type="submit" value="登録する"></button>
-            <button class="btn btn-white px-6 py-2"><a href="{{ route('student.index') }}">キャンセル</button>
+            <a class="btn-white px-6 py-2" href="{{ route('student.index') }}">キャンセル</a>
         </div>
 
     </form>

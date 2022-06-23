@@ -29,7 +29,8 @@ Route::put('/student/{student}/unexpired_update', [App\Http\Controllers\StudentC
 Route::resource('/student', 'App\Http\Controllers\StudentController')
     ->middleware(['auth']);
 
-Route::resource('/item_master', 'App\Http\Controllers\ItemMasterController')
+Route::resource('/item_master', 'App\Http\Controllers\ItemMasterController',
+    ['except' => ['show']])
     ->middleware(['auth']);
 
 Route::resource('/item', 'App\Http\Controllers\ItemController')

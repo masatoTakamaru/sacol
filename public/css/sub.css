@@ -41,8 +41,11 @@ a, h1, h2, h3, li, p, th, td {
 
 .btn-white {
   color: #2f855a;
-  background: white;
+  font-weight: 700;
+  background-color: white;
   border: solid 2px #2f855a;
+  transition: 0.3s;
+  border-radius: 0.5rem;
 }
 
 .btn-white:visited {
@@ -51,7 +54,7 @@ a, h1, h2, h3, li, p, th, td {
 
 .btn-white:hover {
   color: #fff;
-  background: #276749;
+  background-color: #276749;
 }
 
 .btn-login, .btn-register {

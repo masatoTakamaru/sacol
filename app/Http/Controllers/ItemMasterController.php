@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Models\ItemMaster;
+use App\Http\Requests\ItemMasterRequest;
 
 class ItemMasterController extends Controller
 {
@@ -26,10 +27,10 @@ class ItemMasterController extends Controller
     public function index()
     {
         $auths = Auth::user();
-        $subject_qtys = $auths->item_masters->where('category', '1');
-        $subject_singles = $auths->item_masters->where('category', '2');
-        $charges = $auths->item_masters->where('category', '3');
-        $discounts = $auths->item_masters->where('category', '4');
+        $subject_qtys = $auths->item_masters->where('category', '1')->sortBy('code');
+        $subject_singles = $auths->item_masters->where('category', '2')->sortBy('code');
+        $charges = $auths->item_masters->where('category', '3')->sortBy('code');
+        $discounts = $auths->item_masters->where('category', '4')->sortBy('code');
 
         return view('item_master.index', [
             'subject_qtys' => $subject_qtys,
@@ -60,20 +61,20 @@ class ItemMasterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ItemMasterRequest $request)
     {
-        //
-    }
+        $auths = Auth::user();
+        $auths->item_masters()->create([
+            'code' => (int) $request->code,
+            'category' => (int) $request->category,
+            'name' => $request->name,
+            'price' => (int) $request->price,
+            'description' => $request->description,
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        session()->flash('flashmessage', '生徒が登録されました。');
+
+        return redirect()->route('item_master.index');
     }
 
     /**
@@ -84,7 +85,12 @@ class ItemMasterController extends Controller
      */
     public function edit($id)
     {
-        //
+        $auths = Auth::user();
+        $item_master = $auths->item_masters()->find((int) Hashids::decode($id)[0]);
+        return view('item_master.edit', [
+            'item_master' => $item_master,
+            'categories' => $this->categories,
+        ]);
     }
 
     /**
@@ -94,9 +100,20 @@ class ItemMasterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ItemMasterRequest $request, $id)
     {
-        //
+        $auths = Auth::user();
+        $item_master = $auths->item_masters()->find($id)->update([
+            'code' => (int) $request->code,
+            'category' => (int) $request->category,
+            'name' => $request->name,
+            'price' => (int) $request->price,
+            'description' => $request->description,
+        ]);
+
+        session()->flash('flashmessage', '科目の情報が更新されました。');
+
+        return redirect()->route('item_master.index');
     }
 
     /**
@@ -107,6 +124,11 @@ class ItemMasterController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $auths = Auth::user();
+        $auths->item_masters()->find($id)->delete();
+
+        session()->flash('flashmessage', '科目が削除されました。');
+
+        return redirect()->route('item_master.index');
     }
 }
