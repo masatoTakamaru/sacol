@@ -36,8 +36,8 @@ class StudentSeeder extends Seeder
                 'given_name_kana'=>trim($row[7]),
                 'gender'=>trim($row[8]),
                 'grade'=>trim((int) $row[9]),
-                'family_group'=>trim($row[12]),
-                'email'=>trim($row[21]),
+                'family_group'=>trim($row[10]),
+                'email'=>trim($row[11]),
 
                 'created_at'=>now(),
                 'updated_at'=>now(),

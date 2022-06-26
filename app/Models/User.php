@@ -69,9 +69,4 @@ class User extends Authenticatable
         return $this->hasMany(ItemMaster::class);
     }
 
-    public function items()
-    {
-        return $this->hasMany(Items::class);
-    }
-
 }

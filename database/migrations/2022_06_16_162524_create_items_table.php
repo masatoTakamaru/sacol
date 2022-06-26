@@ -17,11 +17,12 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('student_id');
             $table->integer('code');
-            $table->date('period');
+            $table->integer('year');
+            $table->integer('month');
             $table->integer('category');
             $table->string('name');
             $table->integer('price');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

@@ -7,7 +7,7 @@
         <a class="text-blue-500" href="{{ route('student.index') }}">生徒の一覧に戻る</a>
     </div>
     <div class="flex justify-center">
-    <table>
+    <table class="mb-12">
     <tbody>
     <tr>
         <td class="pr-4">学年</td>
@@ -33,6 +33,16 @@
         <td class="pr-4">備考</td>
         <td>{{ $st->remarks }}</td>
     </tr>
+    <tr>
+        <td class="pr-4">入会日</td>
+        <td>{{ $st->registered_date }}</td>
+    </tr>
+    @if($st->expired_flg)
+        <tr>
+            <td class="pr-4">退会日</td>
+            <td>{{ $st->expired_date }}</td>
+        </tr>
+    @endif    
     </tbody>
     </table>
     </div>

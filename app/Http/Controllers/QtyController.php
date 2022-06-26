@@ -3,9 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
+use App\Models\Qty;
 
 class QtyController extends Controller
 {
+    public $grades = [
+        '未就学','年少','年中','年長','小学１年',
+        '小学２年','小学３年','小学４年','小学５年','小学６年',
+        '中学１年','中学２年','中学３年','高校１年','高校２年',
+        '高校３年',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +22,7 @@ class QtyController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -54,9 +63,14 @@ class QtyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+        $auths = Auth::user();
+        $qtys = $auths->qtys;
+        return view('qty.edit', [
+            'qtys' => $qtys,
+            'grades' => $this->grades,
+        ]);
     }
 
     /**

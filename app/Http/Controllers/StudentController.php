@@ -43,7 +43,19 @@ class StudentController extends Controller
     public function store(StudentRequest $request)
     {
         $auths = Auth::user();
-        $auths->students()->create($request->all());
+        $auths->students()->create([
+            'registered_date' => $request->registered_date,
+            'expired_flg' => '0',
+            'expired_date' => '9999-12-31',
+            'family_name' => $request->family_name,
+            'given_name' => $request->given_name,
+            'family_name_kana' => $request->family_name_kana,
+            'given_name_kana' => $request->given_name_kana,
+            'gender' => $request->gender,
+            'grade' => $request->grade,
+            'email' => $request->email,
+            'remarks' => $request->remarks,
+        ]);
 
         session()->flash('flashmessage', '生徒が登録されました。');
 
