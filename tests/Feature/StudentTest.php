@@ -20,35 +20,6 @@ class StudentTest extends TestCase
         '高校３年',
     ];
 
-    /**
-     * A basic feature test example.
-     * @test
-     * @return void
-     */
-    public function LPが正しく表示される()
-    {
-        $response = $this->get('/');
-        $response
-            ->assertStatus(200)
-            ->assertSee('Sacol')
-            ->assertSee('ログイン')
-            ->assertSee('小規模学習塾・習い事教室向け月謝管理アプリ')
-            ->assertSee('新規登録はこちらから');
-    }
-
-    /** @test */
-    public function ログインページが正しく表示される()
-    {
-        $response = $this->get('/login');
-        $response
-            ->assertStatus(200)
-            ->assertSee('メールアドレス')
-            ->assertSee('パスワード')
-            ->assertSee('ログイン状態を保持する')
-            ->assertSee('パスワードを忘れた方はこちら')
-            ->assertSee('ログイン');
-    }
-
     /** @test */
     public function 生徒の一覧が正しく表示されるユーザー1()
     {
@@ -65,18 +36,12 @@ class StudentTest extends TestCase
             ->assertSee('名前')
             ->assertSee('フリガナ')
             ->assertSee('性別')
-            ->assertSee('電話番号１')
-            ->assertSee('電話番号２')
             ->assertSee($this->grades[$st->grade])
             ->assertSee($st->family_name)
             ->assertSee($st->given_name)
             ->assertSee($st->family_name_kana)
             ->assertSee($st->given_name_kana)
             ->assertSee($st->gender)
-            ->assertSee($st->phone1)
-            ->assertSee($st->phone1_relationship)
-            ->assertSee($st->phone2)
-            ->assertSee($st->phone2_relationship);
     }
 
     /** @test */
@@ -95,18 +60,12 @@ class StudentTest extends TestCase
             ->assertSee('名前')
             ->assertSee('フリガナ')
             ->assertSee('性別')
-            ->assertSee('電話番号１')
-            ->assertSee('電話番号２')
             ->assertSee($this->grades[$st->grade])
             ->assertSee($st->family_name)
             ->assertSee($st->given_name)
             ->assertSee($st->family_name_kana)
             ->assertSee($st->given_name_kana)
             ->assertSee($st->gender)
-            ->assertSee($st->phone1)
-            ->assertSee($st->phone1_relationship)
-            ->assertSee($st->phone2)
-            ->assertSee($st->phone2_relationship);
     }
     
     /** @test */
@@ -193,14 +152,6 @@ class StudentTest extends TestCase
             ->assertSee('生徒フリガナ')
             ->assertSee('性別')
             ->assertSee('学年')
-            ->assertSee('生年月日')
-            ->assertSee('学校名')
-            ->assertSee('保護者姓・名')
-            ->assertSee('保護者フリガナ')
-            ->assertSee('電話番号１')
-            ->assertSee('続柄')
-            ->assertSee('電話番号２')
-            ->assertSee('続柄')
             ->assertSee('メールアドレス')
             ->assertSee('備考')
             ->assertSee('*は入力必須')
@@ -212,16 +163,6 @@ class StudentTest extends TestCase
             ->assertSee($st->family_name_kana)
             ->assertSee($st->given_name_kana)
             ->assertSee($st->gender)
-            ->assertSee($st->birth_date)
-            ->assertSee($st->school_attended)
-            ->assertSee($st->guardian_family_name)
-            ->assertSee($st->guardian_given_name)
-            ->assertSee($st->guardian_family_name_kana)
-            ->assertSee($st->guardian_given_name_kana)
-            ->assertSee($st->phone1)
-            ->assertSee($st->phone1_relationship)
-            ->assertSee($st->phone2)
-            ->assertSee($st->phone2_relationship)
             ->assertSee($st->email)
             ->assertSee($st->remarks);
     }

@@ -26,14 +26,13 @@ class ItemSeeder extends Seeder
         $count = 0;
         foreach($familyNamesSplFileObject as $key=>$row) {
             DB::table('items')->insert([
-                'student_id'=>trim($row[0]),
-                'code'=>trim($row[1]),
-                'year'=>trim($row[2]),
-                'month'=>trim($row[3]),
-                'category'=>trim($row[4]),
-                'name'=>trim($row[5]),
-                'price'=>trim($row[6]),
-                'description'=>trim($row[7]),
+                'sheet_id'=>trim($row[0]),
+                'student_id'=>trim($row[1]),
+                'code'=>trim($row[2]),
+                'category'=>trim($row[3]),
+                'name'=>trim($row[4]),
+                'price'=>trim($row[5]),
+                'description'=>trim($row[6]),
                 'created_at'=>now(),
                 'updated_at'=>now(),
             ]);

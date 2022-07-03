@@ -27,4 +27,10 @@ class Item extends Model
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function sheet()
+    {
+        return $this->belongsTo(Sheet::class);
+    }
+
 }

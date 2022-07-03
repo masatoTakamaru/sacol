@@ -79,5 +79,10 @@ class User extends Authenticatable
         return $this->hasMany(Qprice::class);
     }
 
+    public function sheets()
+    {
+        return $this->hasMany(Sheet::class);
+    }
+
 
 }

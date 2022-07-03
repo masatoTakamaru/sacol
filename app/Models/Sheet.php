@@ -5,20 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Qprice extends Model
+class Sheet extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'year',
         'month',
-        'grade',
-        'qprice',
-        'price',
+        'enrollment',
+        'sales',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(Item::class);
     }
 }

@@ -66,12 +66,10 @@ Route::get('/qprice', [App\Http\Controllers\QpriceController::class, 'edit'])
 Route::put('/qprice', [App\Http\Controllers\QpriceController::class, 'update'])
     ->middleware(['auth'])->name('qprice.update');
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
+Route::resource('/sheet',
+    'App\Http\Controllers\SheetController',
+    ['only' => ['store', 'update', 'destroy']])
+    ->middleware(['auth']);
+
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'dashboard'])
+    ->middleware(['auth'])->name('dashboard');

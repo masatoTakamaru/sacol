@@ -2,8 +2,8 @@
     <div class="home-container">
         <div>
             <div class="front-logo">
-                <p class="flex items-center font-top-page text-3xl text-green-800 pt-8 pl-10 app-name"><img class="mr-4" src="fabicon-64x64.png"/>Sacol</p>
-                <p class="font-top-page text-xl text-green-800 font-bold pb-8 mt-4 ml-28">小規模学習塾・習い事教室向け月謝管理アプリ</p>
+                <p class="flex items-center text-3xl text-green-800 pt-8 pl-10 front-logo"><img class="mr-4" src="fabicon-64x64.png"/>Sacol</p>
+                <p class="text-xl text-green-800 font-bold pb-8 mt-4 ml-28">小規模学習塾・習い事教室向け月謝管理アプリ</p>
             </div>
             <div class="flex justify-center mt-28">
                 @if (Route::has('login'))

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             QpriceSeeder::class,
             ItemMasterSeeder::class,
             ItemSeeder::class,
+            SheetSeeder::class,
         ]);
     }
 }

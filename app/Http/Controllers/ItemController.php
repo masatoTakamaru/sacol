@@ -28,6 +28,10 @@ class ItemController extends Controller
     public function index($year, $month)
     {
         $auths = Auth::user();
+        $sheet = $auths->sheets()->where([
+            ['year', $year],
+            ['month', $month],
+        ])->first();
         $students = $auths->students()
             //帳簿の年月に在籍している生徒を抽出
             ->whereYear('registered_date', '<=', $year)
@@ -47,8 +51,7 @@ class ItemController extends Controller
             $collection = collect();
 
             foreach ($members as $st) {
-                $items = $st->items()
-                    ->where([['year', $year], ['month', $month]])->get();
+                $items = $sheet->items;
                 $qprice = $items->where('category', 0)->first();
                 $singles = $items->where('category', 2);
                 $others = $items->where('category', 3);
