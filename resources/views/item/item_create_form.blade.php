@@ -96,32 +96,42 @@
 </td>
 
 <script>
+    let elem_price = document.querySelector('#price');
+    let elem_cat = document.querySelector('#category');
     //コードから科目を検索
     document.querySelector('#api-search').addEventListener('click', ()=> {
-        const elem = document.querySelector('#code');
-        const code = elem.value;
+        const elem_code = document.querySelector('#code');
+        const code = elem_code.value;
         fetch('/item_master/' + code + '/search')
             .then((data) => data.json())
             .then((obj) => {
                 //オブジェクトが空かどうか判定
                 if (!Object.keys(obj).length) {
                     document.querySelector('#name').value = '科目が存在しません';
-                    document.querySelector('#category').value = null;
-                    document.querySelector('#price').value = null;
+                    elem_cat.value = null;
+                    elem_price.value = null;
                     document.querySelector('#description').value = null;
                 } else {
-                    document.querySelector('#category').value = obj.category;
+                    elem_cat.value = obj.category;
                     document.querySelector('#name').value = obj.name;
-                    document.querySelector('#price').value = obj.price;
+                    elem_price.value = obj.price;
                     document.querySelector('#description').value = obj.description;
                 }
                 //従量課金型科目の場合は価格を表示しない
                 if (obj.category == '1') {
-                    document.querySelector('#price').style.display='none';
+                    elem_price.style.display='none';
                 } else {
-                    document.querySelector('#price').style.display='block';
+                    elem_price.style.display='block';
                 }
             });
-        document.querySelector('#code').focus();
+        elem_code.focus();
+    });
+    //従量課金型科目の場合は価格を表示しない
+    elem_cat.addEventListener('change', ()=> {
+        if (elem_cat.value == '1') {
+            elem_price.style.display='none';
+        } else {
+            elem_price.style.display='block';
+        }
     });
 </script>
