@@ -11,6 +11,7 @@ use App\Http\Requests\ItemMasterRequest;
 class ItemMasterController extends Controller
 {
     public $categories = [
+        '',
         '従量課金型科目',
         '単独課金型科目',
         '諸費用',
@@ -27,13 +28,13 @@ class ItemMasterController extends Controller
     public function index()
     {
         $auths = Auth::user();
-        $subject_qtys = $auths->item_masters->where('category', '1')->sortBy('code');
+        $subject_qprices = $auths->item_masters->where('category', '1')->sortBy('code');
         $subject_singles = $auths->item_masters->where('category', '2')->sortBy('code');
         $charges = $auths->item_masters->where('category', '3')->sortBy('code');
         $discounts = $auths->item_masters->where('category', '4')->sortBy('code');
 
         return view('item_master.index', [
-            'subject_qtys' => $subject_qtys,
+            'subject_qprices' => $subject_qprices,
             'subject_singles' => $subject_singles,
             'charges' => $charges,
             'discounts' => $discounts,
@@ -130,5 +131,17 @@ class ItemMasterController extends Controller
         session()->flash('flashmessage', '科目が削除されました。');
 
         return redirect()->route('item_master.index');
+    }
+
+    public function search($code)
+    {
+        $auths = Auth::user();
+        $item_master = $auths->item_masters()->where('code', $code)->first();
+        return response()->json(
+            $item_master,
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 }

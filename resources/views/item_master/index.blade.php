@@ -5,7 +5,7 @@
  
     <div class="flex justify-end">
         <a class="text-blue-500 py-4 mr-6" href="{{ route('item_master.create') }}">科目の新規登録</a>
-        <a class="text-blue-500 py-4 mr-6" href="{{ route('qty.edit') }}">従量課金型科目の設定</a>
+        <a class="text-blue-500 py-4 mr-6" href="{{ route('qprice.edit') }}">従量課金型科目の設定</a>
     </div>
     
     <div class="flex justify-center">
@@ -22,11 +22,11 @@
     <tr>
         <td colspan="4">
             <div class="flex">
-                <p class="mr-3">{{ $categories[0] }}({{ $subject_qtys->count() }})</p>
+                <p class="mr-3">{{ $categories[1] }}({{ $subject_qprices->count() }})</p>
             </div>
         </td>
     </tr>
-    @foreach($subject_qtys as $e)
+    @foreach($subject_qprices as $e)
         <tr>
             <td class="pr-2">{{ $e->code }}</td>
             <td class="pr-2"><a class="text-blue-500 underline" href="{{ route('item_master.edit', ['item_master' => Hashids::encode($e->id)]) }}">{{ $e->name }}</a></td>
@@ -37,7 +37,7 @@
     <tr>
         <td colspan="4">
             <div class="flex">
-                <p class="mr-3">{{ $categories[1] }}({{ $subject_singles->count() }})</p>
+                <p class="mr-3">{{ $categories[2] }}({{ $subject_singles->count() }})</p>
             </div>
         </td>
     </tr>
@@ -52,7 +52,7 @@
     <tr>
         <td colspan="4">
             <div class="flex">
-                <p class="mr-3">{{ $categories[2] }}({{ $charges->count() }})</p>
+                <p class="mr-3">{{ $categories[3] }}({{ $charges->count() }})</p>
             </div>
         </td>
     </tr>
@@ -67,7 +67,7 @@
     <tr>
         <td colspan="4">
             <div class="flex">
-                <p class="mr-3">{{ $categories[3] }}({{ $discounts->count() }})</p>
+                <p class="mr-3">{{ $categories[4] }}({{ $discounts->count() }})</p>
             </div>
         </td>
     </tr>

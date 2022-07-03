@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
-class QtySeeder extends Seeder
+class QpriceSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +15,8 @@ class QtySeeder extends Seeder
      */
     public function run()
     {
-        $this->command->info("Qtyの作成を開始します...");
-        $familyNamesSplFileObject = new \SplFileObject(__DIR__ . '/csv/qty.csv');
+        $this->command->info("qpriceの作成を開始します...");
+        $familyNamesSplFileObject = new \SplFileObject(__DIR__ . '/csv/qprice.csv');
         $familyNamesSplFileObject->setFlags(
             \SplFileObject::READ_CSV |
             \SplFileObject::READ_AHEAD |
@@ -25,12 +25,13 @@ class QtySeeder extends Seeder
         );
         $count = 0;
         foreach($familyNamesSplFileObject as $key=>$row) {
-            DB::table('qtys')->insert([
+            DB::table('qprices')->insert([
                 'user_id'=>trim($row[0]),
-                'period'=>trim($row[1]),
-                'grade'=>trim($row[2]),
-                'qty'=>trim($row[3]),
-                'price'=>trim($row[4]),
+                'year'=>trim($row[1]),
+                'month'=>trim($row[2]),
+                'grade'=>trim($row[3]),
+                'qprice'=>trim($row[4]),
+                'price'=>trim($row[5]),
                 'created_at'=>now(),
                 'updated_at'=>now(),
             ]);

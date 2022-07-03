@@ -32,24 +32,39 @@ Route::put('/student/{student}/unexpired_update',
 Route::resource('/student', 'App\Http\Controllers\StudentController')
     ->middleware(['auth']);
 
+Route::get('/item/{year}/{month}',
+    [App\Http\Controllers\ItemController::class, 'index'])
+    ->middleware(['auth'])->name('item.index');
+
+Route::get('/item/{student}/{year}/{month}/{edit_id?}',
+    [App\Http\Controllers\ItemController::class, 'edit'])
+    ->middleware(['auth'])->name('item.edit');
+
+Route::post('/item/store',
+    [App\Http\Controllers\ItemController::class, 'store'])
+    ->middleware(['auth'])->name('item.store');
+
+Route::put('/item/{item}/update',
+    [App\Http\Controllers\ItemController::class, 'update'])
+    ->middleware(['auth'])->name('item.update');
+
+Route::delete('/item/{item}/destroy',
+    [App\Http\Controllers\ItemController::class, 'destroy'])
+    ->middleware(['auth'])->name('item.destroy');
+
+Route::get('/item_master/{code}/search',
+    [App\Http\Controllers\ItemMasterController::class, 'search']);
+
 Route::resource('/item_master',
     'App\Http\Controllers\ItemMasterController',
     ['except' => ['show']])
     ->middleware(['auth']);
 
-Route::resource('/item', 'App\Http\Controllers\ItemController')
-    ->middleware(['auth']);
+Route::get('/qprice', [App\Http\Controllers\QpriceController::class, 'edit'])
+    ->middleware(['auth'])->name('qprice.edit');
 
-Route::get('/qty', [App\Http\Controllers\QtyController::class, 'edit'])
-    ->middleware(['auth'])->name('qty.edit');
-
-Route::put('/qty', [App\Http\Controllers\QtyController::class, 'update'])
-    ->middleware(['auth'])->name('qty.update');
-
-Route::get('/sheet/{year}/{month}',
-    [App\Http\Controllers\SheetController::class, 'index'])
-    ->middleware(['auth'])->name('sheet.index');
-
+Route::put('/qprice', [App\Http\Controllers\QpriceController::class, 'update'])
+    ->middleware(['auth'])->name('qprice.update');
 
 Route::middleware([
     'auth:sanctum',

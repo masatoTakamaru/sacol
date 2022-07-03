@@ -10,7 +10,8 @@ class Item extends Model
     use HasFactory;
     protected $fillable = [
         'code',
-        'period',
+        'year',
+        'month',
         'category',
         'name',
         'price',

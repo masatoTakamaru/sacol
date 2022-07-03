@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             StudentSeeder::class,
-            QtySeeder::class,
+            QpriceSeeder::class,
             ItemMasterSeeder::class,
             ItemSeeder::class,
         ]);

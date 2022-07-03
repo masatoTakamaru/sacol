@@ -12,7 +12,7 @@
         @endforeach
     </select>
 
-    <form action="{{ route('qty.update') }}" method="POST">
+    <form action="{{ route('qprice.update') }}" method="POST">
         @method('PUT')
         @csrf
 

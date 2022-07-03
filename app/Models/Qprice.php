@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Qty extends Model
+class Qprice extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'period',
         'grade',
-        'qty',
+        'qprice',
         'price',
     ];
 

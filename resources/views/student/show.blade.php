@@ -90,9 +90,7 @@
     <script>
         //生徒の削除：確認メッセージ
         $("#student-delete").on('click', () => {
-            if(!confirm("削除してもよろしいですか？")) {
-                return false;
-            }
+            if(!confirm("削除してもよろしいですか？")) return false;
         });
     </script>
 </x-app-layout>

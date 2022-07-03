@@ -16,10 +16,12 @@
         <select id="item-master-caterogy-select" class="border rounded py-2 pl-2 pr-8" name="category">
             <option value="">選択</option>
             @foreach ($categories as $cat)
-                @if ($loop->index + 1 == (old('category') ?? $item_master->category))
-                    <option value="{{ $loop->index + 1 }}" selected="selected">{{ $cat }}</option>
-                @else
-                    <option value="{{ $loop->index + 1 }}">{{ $cat }}</option>
+                @if ($loop->index != 0)
+                    @if ($loop->index == (old('category') ?? $item_master->category))
+                        <option value="{{ $loop->index }}" selected="selected">{{ $cat }}</option>
+                    @else
+                        <option value="{{ $loop->index }}">{{ $cat }}</option>
+                    @endif
                 @endif
             @endforeach
         </select>

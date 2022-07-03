@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('qtys', function (Blueprint $table) {
+        Schema::create('qprices', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->date('period');
+            $table->integer('year');
+            $table->integer('month');
             $table->integer('grade');
-            $table->integer('qty');
+            $table->integer('qprice');
             $table->integer('price');
 
             $table->timestamps();
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('qtys');
+        Schema::dropIfExists('qprices');
     }
 };

@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use App\Models\Qty;
+use App\Models\Qprice;
 
-class QtyController extends Controller
+class QpriceController extends Controller
 {
     public $grades = [
         '未就学','年少','年中','年長','小学１年',
@@ -66,9 +66,9 @@ class QtyController extends Controller
     public function edit()
     {
         $auths = Auth::user();
-        $qtys = $auths->qtys;
-        return view('qty.edit', [
-            'qtys' => $qtys,
+        $qprices = $auths->qprices;
+        return view('qprice.edit', [
+            'qprices' => $qprices,
             'grades' => $this->grades,
         ]);
     }
