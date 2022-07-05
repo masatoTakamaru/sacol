@@ -3,7 +3,7 @@
 <tr>
     <td><label class="mr-4" for="registered_date">入会日<span class="text-red-600">*</span></label></td>
     <td>
-        <input class="border rounded" type="date" name="registered_date" value="{{ old('registered_date') ?? $st->registered_date }}">
+        <input id="registered_date" class="border rounded" type="date" name="registered_date" value="{{ old('registered_date') ?? $st->registered_date }}">
         @if ($errors->has('registered_date'))
             <p class="text-red-600">{{ $errors->first('registered_date') }}</p>
         @endif

@@ -82,6 +82,7 @@ class StudentController extends Controller
     {
         $auths = Auth::user();
         $student = $auths->students()->find((int) Hashids::decode($id)[0]);
+      
         return view('student.edit', [
             'st' => $student,
             'genders' => $this->genders,
@@ -99,6 +100,7 @@ class StudentController extends Controller
     public function update(StudentRequest $request, $id)
     {
         $auths = Auth::user();
+
         $auths->students()->find($id)->update($request->all());
 
         session()->flash('flashmessage', '生徒の情報が更新されました。');

@@ -4,29 +4,28 @@
     </x-slot>
 
     @if ($sheets->count())
-
-    <div class="flex justify-center">
-        <table>
-            <thead>
-                <tr>
-                    <th>年月</th>
-                    <th>生徒数</th>
-                    <th>請求額</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($sheets as $sheet)
+        <div class="flex justify-center">
+            <table>
+                <thead>
                     <tr>
-                        <td class="px-8">
-                            <a class="font-bold text-blue-600" href="{{ route('item.index', ['year'=>$sheet->year, 'month'=>$sheet->month]) }}">{{ $sheet->year }} 年 {{ $sheet->month }} 月</a>
-                        </td>
-                        <td class="px-8">{{ $sheet->enrollment }} 人</td>
-                        <td class="px-8 text-right">{{ number_format($sheet->sales) }}</td>
+                        <th>年月</th>
+                        <th>生徒数</th>
+                        <th>請求額</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach ($sheets as $sheet)
+                        <tr>
+                            <td class="px-8">
+                                <a class="font-bold text-blue-600" href="{{ route('item.index', ['year'=>$sheet->year, 'month'=>$sheet->month]) }}">{{ $sheet->year }} 年 {{ $sheet->month }} 月</a>
+                            </td>
+                            <td class="px-8">{{ $sheet->enrollment }} 人</td>
+                            <td class="px-8 text-right">{{ number_format($sheet->sales) }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     @else
         <div>
             <p class="mb-8">帳簿がありません。最初の帳簿を作成してください。</p>

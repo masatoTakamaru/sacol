@@ -32,7 +32,7 @@ class StudentRequest extends FormRequest
             'given_name_kana' => ['required', 'regex:/\A[ァ-ヴー]+\z/u', 'max:20'],
             'gender' => ['required', 'in:男,女,その他'],
             'grade' => ['required', 'integer'],
-            'email' => ['nullable', 'email:strict,dns', 'max:80'],
+            'email' => ['nullable', 'email:strict,dns', 'max:50'],
             'remarks' => ['nullable', 'max:200'],
         ];
     }
