@@ -26,7 +26,7 @@ class StudentFactory extends Factory
             'given_name_kana' => 'アイウエオ',
             'gender' => $genders[array_rand($genders, 1)],
             'grade' => mt_rand(1,16),
-            'email' => $this->faker->email,
+            'email' => $this->faker->freeEmailDomain,
             'remarks' => $this->faker->text(200),
         ];
     }
