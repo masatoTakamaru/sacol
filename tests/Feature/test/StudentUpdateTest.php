@@ -15,7 +15,10 @@ class StudentUpdateTest extends TestCase
     use RefreshDatabase;
     protected $seed = true;
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 生徒を編集したら一覧にリダイレクトされる()
     {
         $data = Student::factory()->make()->toArray();
@@ -27,7 +30,10 @@ class StudentUpdateTest extends TestCase
             ->assertRedirect(route('student.index'));
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 編集した生徒が一覧に表示される()
     {
         $data = Student::factory()->make()->toArray();
@@ -41,7 +47,10 @@ class StudentUpdateTest extends TestCase
             ->assertSee($data['given_name']);
     }
     
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 生徒姓が空白は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -53,7 +62,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['family_name' => '生徒姓は、必ず指定してください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 生徒姓が21字以上は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -65,7 +77,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['family_name' => '生徒姓は、20文字以下にしてください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 生徒名が空白は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -77,7 +92,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['given_name' => '生徒名は、必ず指定してください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 生徒名が21字以上は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -89,7 +107,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['given_name' => '生徒名は、20文字以下にしてください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 生徒姓フリガナが空白は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -101,7 +122,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['family_name_kana' => '生徒姓フリガナは、必ず指定してください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 生徒姓フリガナが21字以上は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -113,7 +137,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['family_name_kana' => '生徒姓フリガナは、20文字以下にしてください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 生徒姓フリガナが全角カタカナ以外は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -125,7 +152,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['family_name_kana' => '全角カタカナで入力してください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 生徒名フリガナが空白は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -137,7 +167,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['given_name_kana' => '生徒名フリガナは、必ず指定してください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 生徒名フリガナが21字以上は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -149,7 +182,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['given_name_kana' => '生徒名フリガナは、20文字以下にしてください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 生徒名フリガナが全角カタカナ以外は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -161,7 +197,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['given_name_kana' => '全角カタカナで入力してください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 性別未選択は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -173,7 +212,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['gender' => '性別は、必ず指定してください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 学年未選択は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -185,7 +227,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['grade' => '学年は、必ず指定してください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function メールアドレスが空白は可()
     {
         $data = Student::factory()->make()->toArray();
@@ -197,7 +242,10 @@ class StudentUpdateTest extends TestCase
             ->assertValid();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function メールアドレスが51字以上は不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -209,7 +257,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['email' => 'メールアドレスは、50文字以下にしてください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 無効なメールアドレスは不可()
     {
         $data = Student::factory()->make()->toArray();
@@ -221,7 +272,10 @@ class StudentUpdateTest extends TestCase
             ->assertInValid(['email' => 'メールアドレスは、有効なメールアドレス形式で指定してください。']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 備考が空白は可()
     {
         $data = Student::factory()->make()->toArray();
@@ -233,7 +287,10 @@ class StudentUpdateTest extends TestCase
             ->assertValid();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group student
+    */
     public function 備考が201字以上は不可()
     {
         $data = Student::factory()->make()->toArray();
