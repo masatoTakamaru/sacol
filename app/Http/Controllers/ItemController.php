@@ -93,30 +93,32 @@ class ItemController extends Controller
     {
         $auths = Auth::user();
         $st = $auths->students()->find($request->student_id);
+        $sheet = $auths->sheets()
+            ->where([
+                ['year', $request->year],
+                ['month', $request->month],
+            ])->first();
         $st->items()->create([
+            'sheet_id' => $sheet->id,
             'code' => (int) $request->code,
-            'year' => (int) $request->year,
-            'month' => (int) $request->month,
             'category' => (int) $request->category,
             'name' => $request->name,
             'price' => (int) $request->price,
             'description' => $request->description,
         ]);
         //従量課金型科目用の科目設定
+        $items = $st->items()
+            ->where('sheet_id', $sheet->id)->first();
         if ($request->category == '1') {
-            $count = $st->items()
-                ->where([
-                    ['year', $request->year],
-                    ['month', $request->month],
-                    ['category', 1],
-                ])->count();
+            $count = $items
+                ->where('category', 1)->count();
             $price = $auths->qprices()->where([
                 ['year', $request->year],
                 ['month', $request->month],
                 ['grade', $st->grade],
                 ['qprice', $count],
             ])->first()->price;
-            if($auths->items()->where('category', 0)) {
+            if($items->where('category', 0)) {
                 $st->items()->where('category',0)->first()->update([
                     'name' => $this->grades[$st->grade] . (string) $count . '教科',
                     'price' => (int) $price,

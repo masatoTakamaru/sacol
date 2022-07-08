@@ -16,8 +16,6 @@ class ItemMasterFactory extends Factory
      */
     public function definition()
     {
-        $genders = ['男', '女', 'その他'];
-
         return [
             'code' => mt_rand(5000,6000),
             'category' => mt_rand(1,4),

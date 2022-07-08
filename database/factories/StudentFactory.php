@@ -16,17 +16,15 @@ class StudentFactory extends Factory
      */
     public function definition()
     {
-        $genders = ['男', '女', 'その他'];
-
         return [
             'registered_date' => $this->faker->date('Y-m-d'),
             'family_name' => $this->faker->firstName,
             'given_name' => $this->faker->lastName,
             'family_name_kana' => 'アイウエオ',
             'given_name_kana' => 'アイウエオ',
-            'gender' => $genders[array_rand($genders, 1)],
+            'gender' => $this->faker->randomElement(['男', '女', 'その他']),
             'grade' => mt_rand(1,16),
-            'email' => $this->faker->freeEmailDomain,
+            'email' => $this->faker->userName() . '@gmail.com',
             'remarks' => $this->faker->text(200),
         ];
     }

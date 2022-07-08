@@ -10,8 +10,7 @@ class Item extends Model
     use HasFactory;
     protected $fillable = [
         'code',
-        'year',
-        'month',
+        'sheet_id',
         'category',
         'name',
         'price',
@@ -27,10 +26,4 @@ class Item extends Model
     {
         return $this->belongsTo(Student::class);
     }
-
-    public function sheet()
-    {
-        return $this->belongsTo(Sheet::class);
-    }
-
 }
