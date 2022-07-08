@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('qprices', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->integer('year');
-            $table->integer('month');
+            $table->bigInteger('sheet_id');
             $table->integer('grade');
             $table->integer('qprice');
             $table->integer('price');

@@ -27,11 +27,10 @@ class QpriceSeeder extends Seeder
         foreach($familyNamesSplFileObject as $key=>$row) {
             DB::table('qprices')->insert([
                 'user_id'=>trim($row[0]),
-                'year'=>trim($row[1]),
-                'month'=>trim($row[2]),
-                'grade'=>trim($row[3]),
-                'qprice'=>trim($row[4]),
-                'price'=>trim($row[5]),
+                'sheet_id'=>trim($row[1]),
+                'grade'=>trim($row[2]),
+                'qprice'=>trim($row[3]),
+                'price'=>trim($row[4]),
                 'created_at'=>now(),
                 'updated_at'=>now(),
             ]);

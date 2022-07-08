@@ -106,22 +106,25 @@ class ItemController extends Controller
             'price' => (int) $request->price,
             'description' => $request->description,
         ]);
-        //従量課金型科目用の科目設定
-        $items = $st->items()
-            ->where('sheet_id', $sheet->id)->first();
+        //従量課金型科目の設定
         if ($request->category == '1') {
-            $count = $items
-                ->where('category', 1)->count();
+            $count = $st->items()->where([
+                    ['sheet_id', $sheet->id],
+                    ['category', 1],
+                ])->count();
             $price = $auths->qprices()->where([
-                ['year', $request->year],
-                ['month', $request->month],
+                ['sheet_id', $sheet->id],
                 ['grade', $st->grade],
                 ['qprice', $count],
-            ])->first()->price;
-            if($items->where('category', 0)) {
-                $st->items()->where('category',0)->first()->update([
+            ])->first();
+            $st_qprice = $st->items()->where([
+                ['sheet_id', $sheet->id],
+                ['category', 0],
+            ])->first();
+            if($st_qprice) {
+                $st_qprice->update([
                     'name' => $this->grades[$st->grade] . (string) $count . '教科',
-                    'price' => (int) $price,
+                    'price' => (int) $price->price,
                 ]);
             } else {
                 $st->items()->create([
@@ -130,7 +133,7 @@ class ItemController extends Controller
                     'month' => (int) $request->month,
                     'category' => 0,
                     'name' => $this->grades[$st->grade] . (string) $count . '教科',
-                    'price' => (int) $price,
+                    'price' => (int) $price->price,
                     'description' => $request->description,
                 ]);
             }
@@ -210,40 +213,41 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        $auths = Auth::user();
-        $item = $auths->items()->find($id);
+        $auth = Auth::user();
+        $item = $auth->items()->find($id);
+        $sheet = $auth->sheets()->find($item->sheet_id);
         $st = $item->student;
-        $year = $item->year;
-        $month = $item->month;
-        $category = $item->category;
 
         $item->delete();
 
-        if ($category == '1') {
+        if ($item->category == '1') {
             $count = $st->items()
                 ->where([
-                    ['year', $year],
-                    ['month', $month],
+                    ['sheet_id', $sheet->id],
                     ['category', 1],
                 ])->count();
-            $price = $auths->qprices()->where([
-                ['year', $year],
-                ['month', $month],
+            $price = Auth::user()->qprices()->where([
+                ['sheet_id', $sheet->id],
                 ['grade', $st->grade],
                 ['qprice', $count],
             ])->first()->price;
-            $st->items()->where('category',0)->first()->update([
-                'name' => $this->grades[$st->grade] . (string) $count . '教科',
-                'price' => (int) $price,
-            ]);
+            $st->items()
+                ->where([
+                    ['sheet_id', $sheet->id],
+                    ['category', 0],
+                ])->first()->update([
+                    'name' => $this->grades[$st->grade] . (string) $count . '教科',
+                    'price' => (int) $price,
+                ]);
         }
+
 
         session()->flash('flashmessage', '科目が削除されました。');
 
         return redirect()->route('item.edit',[
             'student' => Hashids::encode($st->id),
-            'year' => $year,
-            'month' => $month,
+            'year' => $sheet->year,
+            'month' => $sheet->month,
         ]);
     }
 }
