@@ -3,6 +3,10 @@
         <h2>{{ $st->family_name }}&nbsp;{{ $st->given_name }}:{{ $year }} 年 {{ $month }} 月</h2>
     </x-slot>
 
+    @foreach($errors->all() as $error)
+        <p>{{ $error }}</p>
+    @endforeach
+
     <div class="flex justify-end">
         <a class="btn-white py-1 px-6" href="{{ route('item.index', ['year' => $year, 'month' => $month]) }}">戻る</a>
     </div>

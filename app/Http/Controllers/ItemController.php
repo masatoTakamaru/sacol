@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Auth;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Models\Item;
+use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ItemRequest;
@@ -32,26 +33,27 @@ class ItemController extends Controller
             ['year', $year],
             ['month', $month],
         ])->first();
+        //帳簿が存在しない場合はダッシュボードにリダイレクト
+        if (!$sheet) return redirect()->route('dashboard');
+        //帳簿の年月に在籍している生徒を抽出
+        $date = Carbon::createFromDate($year, $month, 1);
         $students = $auths->students()
-            //帳簿の年月に在籍している生徒を抽出
-            ->whereYear('registered_date', '<=', $year)
-            ->whereMonth('registered_date', '<=', $month)
-            ->whereYear('expired_date', '>=', $year)
-            ->whereMonth('expired_date', '>=', $month)
+            ->whereDate('registered_date', '<=', $date)
+            ->whereDate('expired_date', '>=', $date)
             ->get();
-
         //家族グループidを抽出
         $group_ids = $students->pluck('family_group')->unique()->toArray();
 
         $family_groups = collect();
         $total = 0;
 
+        //家族グループで生徒をまとめる
         foreach ($group_ids as $id) {
             $members = $students->where('family_group', $id);
             $collection = collect();
 
             foreach ($members as $st) {
-                $items = $sheet->items;
+                $items = $st->items->where('sheet_id', $sheet->id);
                 $qprice = $items->where('category', 0)->first();
                 $singles = $items->where('category', 2);
                 $others = $items->where('category', 3);
@@ -162,9 +164,18 @@ class ItemController extends Controller
     {
         $auths = Auth::user();
         $st = $auths->students()->find((int) Hashids::decode($id)[0]);
-        $items = $st->items;
-        
+        $sheet = $auths->sheets()
+            ->where([
+                ['year', $year],
+                ['month', $month],
+            ])->first();
+        $items = $st->items
+            ->where('sheet_id', $sheet->id);
         $new_item = new Item;
+
+        //帳簿の生徒数・請求額の再計算
+        $sheet_controller = app()->make('App\Http\Controllers\SheetController');
+        $sheet_controller->update($sheet->id);
 
         return view('item.edit', [
             'st' => $st,
@@ -190,19 +201,25 @@ class ItemController extends Controller
     {
         $auths = Auth::user();
         $item = $auths->items()->find($id);
+        $sheet = $auths->sheets()->find($item->sheet_id);
         $item->update([
+            'code' => $item->code,
+            'category' => $item->category,
             'name' => $request->name,
             'price' => (int) $request->price,
             'description' => $request->description,
         ]);
+        //帳簿の生徒数・請求額の再計算
+        $sheet_controller = app()->make('App\Http\Controllers\SheetController');
+        $sheet_controller->update($sheet->id);
 
         session()->flash('flashmessage', '情報が更新されました。');
 
-        return redirect()->route('item.edit',[
+        return redirect(route('item.edit', [
             'student' => Hashids::encode($item->student_id),
-            'year' => $item->year,
-            'month' => $item->month,
-        ]);
+            'year' => $sheet->year,
+            'month' => $sheet->month,
+        ]));
     }
 
     /**
@@ -241,7 +258,10 @@ class ItemController extends Controller
                 ]);
         }
 
-
+        //帳簿の生徒数・請求額の再計算
+        $sheet_controller = app()->make('App\Http\Controllers\SheetController');
+        $sheet_controller->update($sheet->id);
+        
         session()->flash('flashmessage', '科目が削除されました。');
 
         return redirect()->route('item.edit',[

@@ -23,5 +23,13 @@ class SheetSeeder extends Seeder
         $sheet->enrollment = 10;
         $sheet->sales = 123456;
         $sheet->save();
+
+        $sheet = new Sheet();
+        $sheet->user_id = 1;
+        $sheet->year = 2022;
+        $sheet->month = 3;
+        $sheet->enrollment = 10;
+        $sheet->sales = 123456;
+        $sheet->save();
     }
 }

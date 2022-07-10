@@ -6,6 +6,10 @@
         @csrf
         @method('PUT')
 
+        <input name="code" type="hidden" value="{{ $item->code }}"></input>
+        <input name="category" type="hidden" value="{{ $item->category }}"></input>
+        <input name="year" type="hidden" value="{{ $year }}"></input>
+        <input name="month" type="hidden" value="{{ $month }}"></input>
         <div class="p-4">
 
         <table>

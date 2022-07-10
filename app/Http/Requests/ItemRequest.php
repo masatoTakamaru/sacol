@@ -42,7 +42,9 @@ class ItemRequest extends FormRequest
         $validator->sometimes('price',
             ['required', 'integer', 'between:0,999999'],
             function($input) {
-                return $input->category !== '1';
+                return $input->category == 2
+                    || $input->category == 3
+                    || $input->category == 4;
             });
     }
 }
