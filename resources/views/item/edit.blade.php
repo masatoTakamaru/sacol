@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2>{{ $st->family_name }}&nbsp;{{ $st->given_name }}:{{ $year }} 年 {{ $month }} 月</h2>
+        <h2>{{ $st->family_name }}&nbsp;{{ $st->given_name }}:{{ $sheet->year }} 年 {{ $sheet->month }} 月</h2>
     </x-slot>
 
     @foreach($errors->all() as $error)
@@ -8,7 +8,7 @@
     @endforeach
 
     <div class="flex justify-end">
-        <a class="btn-white py-1 px-6" href="{{ route('item.index', ['year' => $year, 'month' => $month]) }}">戻る</a>
+        <a class="btn-white py-1 px-6" href="{{ route('item.index', ['sheet' => Hashids::encode($sheet->id)]) }}">戻る</a>
     </div>
 
     <div class="flex justify-center mt-4">
@@ -40,7 +40,7 @@
                 @include('item.item_edit_form')
             @else
                 <td class="pr-2 text-center">
-                    <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'year' => $year, 'month' => $month, 'edit_id' => Hashids::encode($item->id)]) }}">
+                    <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'sheet' => Hashids::encode($sheet->id), 'edit_id' => Hashids::encode($item->id)]) }}">
                         @include('item.edit_button')
                     </a>
                 </td>
@@ -58,7 +58,7 @@
             @include('item.item_edit_form', ['item' => $items->where('category', 0)->first()])
         @else
             <td class="pr-2 text-center">
-                <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'year' => $year, 'month' => $month, 'edit_id' => Hashids::encode($items->where('category', 0)->first()->id)]) }}">
+                <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'sheet' => Hashids::encode($sheet->id), 'edit_id' => Hashids::encode($items->where('category', 0)->first()->id)]) }}">
                     @include('item.edit_button')
                 </a>
             </td>
@@ -83,7 +83,7 @@
                 @include('item.item_edit_form')
             @else
                 <td class="pr-2 text-center">
-                    <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'year' => $year, 'month' => $month, 'edit_id' => Hashids::encode($item->id)]) }}">
+                    <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'sheet' => Hashids::encode($sheet->id), 'edit_id' => Hashids::encode($item->id)]) }}">
                         @include('item.edit_button')
                     </a>
                 </td>
@@ -107,7 +107,7 @@
                 @include('item.item_edit_form')
             @else
                 <td class="pr-2 text-center">
-                    <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'year' => $year, 'month' => $month, 'edit_id' => Hashids::encode($item->id)]) }}">
+                    <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'sheet' => Hashids::encode($sheet->id), 'edit_id' => Hashids::encode($item->id)]) }}">
                         @include('item.edit_button')
                     </a>
                 </td>
@@ -131,7 +131,7 @@
                 @include('item.item_edit_form')
             @else
                 <td class="pr-2 text-center">
-                    <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'year' => $year, 'month' => $month, 'edit_id' => Hashids::encode($item->id)]) }}">
+                    <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'sheet' => Hashids::encode($sheet->id), 'edit_id' => Hashids::encode($item->id)]) }}">
                         @include('item.edit_button')
                     </a>
                 </td>

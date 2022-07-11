@@ -26,17 +26,14 @@ class ItemController extends Controller
         '割引',
     ];
 
-    public function index($year, $month)
+    public function index($id)
     {
         $auths = Auth::user();
-        $sheet = $auths->sheets()->where([
-            ['year', $year],
-            ['month', $month],
-        ])->first();
+        $sheet = $auths->sheets()->find(Hashids::decode($id)[0]);
         //帳簿が存在しない場合はダッシュボードにリダイレクト
         if (!$sheet) return redirect()->route('dashboard');
         //帳簿の年月に在籍している生徒を抽出
-        $date = Carbon::createFromDate($year, $month, 1);
+        $date = Carbon::createFromDate($sheet->year, $sheet->month, 1);
         $students = $auths->students()
             ->whereDate('registered_date', '<=', $date)
             ->whereDate('expired_date', '>=', $date)
@@ -76,8 +73,7 @@ class ItemController extends Controller
             $family_groups->push($collection);
         }
         return view('item.index', [
-            'year' => $year,
-            'month' => $month,
+            'sheet' => $sheet,
             'family_groups' => $family_groups,
             'count' => $students->count(),
             'total' => $total,
@@ -95,11 +91,7 @@ class ItemController extends Controller
     {
         $auths = Auth::user();
         $st = $auths->students()->find($request->student_id);
-        $sheet = $auths->sheets()
-            ->where([
-                ['year', $request->year],
-                ['month', $request->month],
-            ])->first();
+        $sheet = $auths->sheets()->find($request->sheet_id);
         $st->items()->create([
             'sheet_id' => $sheet->id,
             'code' => (int) $request->code,
@@ -143,14 +135,11 @@ class ItemController extends Controller
         
         $new_item = new Item;
 
+        session()->flash('flashmessage', '科目が登録されました。');
+
         return redirect()->route('item.edit', [
             'student' => Hashids::encode($st->id),
-            'year' => $request->year,
-            'month' => $request->month,
-            'items' => $st->items,
-            'new_item' => $new_item,
-            'grades' => $this->grades,
-            'categories' => $this->categories,
+            'sheet' => Hashids::encode($sheet->id),
         ]);
     }
 
@@ -160,27 +149,21 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, $year, $month, $edit_id = null)
+    public function edit($id, $sheet_id, $edit_id = null)
     {
         $auths = Auth::user();
         $st = $auths->students()->find((int) Hashids::decode($id)[0]);
-        $sheet = $auths->sheets()
-            ->where([
-                ['year', $year],
-                ['month', $month],
-            ])->first();
-        $items = $st->items
-            ->where('sheet_id', $sheet->id);
+        $sheet = $auths->sheets()->find(Hashids::decode($sheet_id)[0]);
+        $items = $st->items->where('sheet_id', Hashids::decode($sheet_id)[0]);
         $new_item = new Item;
 
         //帳簿の生徒数・請求額の再計算
         $sheet_controller = app()->make('App\Http\Controllers\SheetController');
-        $sheet_controller->update($sheet->id);
+        $sheet_controller->update(Hashids::decode($sheet_id)[0]);
 
         return view('item.edit', [
             'st' => $st,
-            'year' => $year,
-            'month' => $month,
+            'sheet' => $sheet,
             'items' => $items,
             'new_item' => $new_item,
             'grades' => $this->grades,
@@ -197,8 +180,24 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ItemRequest $request, $id)
+    public function update(Request $request, $id)
     {
+        if($request->category == 0) {
+            $validated = $request->validate([
+                'name' => ['required', 'max:20'],
+                'price' => ['required', 'integer', 'between:0,999999'],
+                'description' => ['nullable', 'max:50'],
+                ]);
+        } else {
+            $validated = $request->validate([
+                'code' => ['required', 'integer', 'between:1,9999'],
+                'category' => ['required', 'integer', 'between:1,4'],
+                'name' => ['required', 'max:20'],
+                'price' => ['required', 'integer', 'between:0,999999'],
+                'description' => ['nullable', 'max:50'],
+                ]);
+        }
+
         $auths = Auth::user();
         $item = $auths->items()->find($id);
         $sheet = $auths->sheets()->find($item->sheet_id);
@@ -213,13 +212,12 @@ class ItemController extends Controller
         $sheet_controller = app()->make('App\Http\Controllers\SheetController');
         $sheet_controller->update($sheet->id);
 
-        session()->flash('flashmessage', '情報が更新されました。');
+        session()->flash('flashmessage', '科目が更新されました。');
 
-        return redirect(route('item.edit', [
-            'student' => Hashids::encode($item->student_id),
-            'year' => $sheet->year,
-            'month' => $sheet->month,
-        ]));
+        return redirect()->route('item.edit', [
+            'student' => Hashids::encode($item->student->id),
+            'sheet' => Hashids::encode($sheet->id),
+        ]);
     }
 
     /**
@@ -266,8 +264,7 @@ class ItemController extends Controller
 
         return redirect()->route('item.edit',[
             'student' => Hashids::encode($st->id),
-            'year' => $sheet->year,
-            'month' => $sheet->month,
+            'sheet' => Hashids::encode($sheet->id),
         ]);
     }
 }

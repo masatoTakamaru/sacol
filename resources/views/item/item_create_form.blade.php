@@ -4,8 +4,7 @@
     <form action="{{ route('item.store') }}" method="POST">
         @csrf
 
-        <input type="hidden" name="year" value="{{ $year }}"></input>
-        <input type="hidden" name="month" value="{{ $month }}"></input>
+        <input type="hidden" name="sheet_id" value="{{ $sheet->id }}"></input>
         <input type="hidden" name="student_id" value="{{ $st->id }}"></input>
 
         <table>

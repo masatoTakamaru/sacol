@@ -8,8 +8,6 @@
 
         <input name="code" type="hidden" value="{{ $item->code }}"></input>
         <input name="category" type="hidden" value="{{ $item->category }}"></input>
-        <input name="year" type="hidden" value="{{ $year }}"></input>
-        <input name="month" type="hidden" value="{{ $month }}"></input>
         <div class="p-4">
 
         <table>
@@ -86,7 +84,7 @@
         <div class="flex justify-center my-4">
             <div class="flex justify-center">
                 <button class="btn mr-4 py-2 px-6 text-sm"><input type="submit" value="更新する"></input></button>
-                <a class="btn-white py-2 px-4 text-sm" href="{{ route('item.edit', ['student'=>Hashids::encode($st->id), 'year'=>$year, 'month'=>$month]) }}">キャンセル</a>
+                <a class="btn-white py-2 px-4 text-sm" href="{{ route('item.edit', ['student'=>Hashids::encode($st->id), 'sheet' => Hashids::encode($sheet->id)]) }}">キャンセル</a>
             </div>
         </div>
 

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2>{{ $year }} 年 {{ $month }} 月の帳簿（生徒数：{{ $count }} 人）</h2>
+            <h2>{{ $sheet->year }} 年 {{ $sheet->month }} 月の帳簿（生徒数：{{ $count }} 人）</h2>
             <a class="text-blue-500" href="{{ route('dashboard') }}">ダッシュボードに戻る</a>
         </div>
     </x-slot>
@@ -21,7 +21,7 @@
                 {{-- グループが１名の場合 --}}
                 @if($fg->count() == 1)
                     <tr class="border-b-2">
-                        <td class="pr-2"><a class="text-blue-600" href="{{ route('item.edit', ['student' => Hashids::encode($fg->first()['id']), 'year' => $year, 'month' => $month]) }}">{{ $fg->first()['family_name'] }}&nbsp;{{ $fg->first()['given_name'] }}</a></td>
+                        <td class="pr-2"><a class="text-blue-600" href="{{ route('item.edit', ['student' => Hashids::encode($fg->first()['id']), 'sheet' => Hashids::encode($sheet->id)]) }}">{{ $fg->first()['family_name'] }}&nbsp;{{ $fg->first()['given_name'] }}</a></td>
                         <td class="pr-2">{{ $grades[$fg->first()['grade']] }}</td>
                         <td class="pr-2 text-right font-bold text-green-600">{{ number_format($fg->first()['fee']) }}</td>
                     </tr>
@@ -29,7 +29,7 @@
                     {{-- グループが２名以上の場合 --}}
                     @foreach($fg as $st)
                         <tr>
-                            <td class="pr-2"><a class="text-blue-600" href="{{ route('item.edit', ['student' => Hashids::encode($st['id']), 'year' => $year, 'month' => $month]) }}">{{ $st['family_name'] }}&nbsp;{{ $st['given_name'] }}</a></td>
+                            <td class="pr-2"><a class="text-blue-600" href="{{ route('item.edit', ['student' => Hashids::encode($st['id']), 'sheet' => Hashids::encode($sheet->id)]) }}">{{ $st['family_name'] }}&nbsp;{{ $st['given_name'] }}</a></td>
                             <td class="pr-2">{{ $grades[$st['grade']] }}</td>
                             <td class="pr-2 text-right text-gray-500">{{ number_format($st['fee']) }}</td>
                         </tr>

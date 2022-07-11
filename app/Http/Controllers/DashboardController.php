@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Vinkla\Hashids\Facades\Hashids;
 
 class DashboardController extends Controller
 {

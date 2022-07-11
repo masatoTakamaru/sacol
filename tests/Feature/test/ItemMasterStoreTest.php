@@ -126,6 +126,7 @@ class ItemMasterStoreTest extends TestCase
     public function 価格が空白は不可()
     {
         $data = ItemMaster::factory()->make()->toArray();
+        $data['category'] = 2;
         $data['price'] = '';
         $response = $this->actingAs(User::find(1))
             ->post(route('item_master.store'), $data)
@@ -139,6 +140,7 @@ class ItemMasterStoreTest extends TestCase
     public function 価格が負の数は不可()
     {
         $data = ItemMaster::factory()->make()->toArray();
+        $data['category'] = 2;
         $data['price'] = -1;
         $response = $this->actingAs(User::find(1))
             ->post(route('item_master.store'), $data)
@@ -152,6 +154,7 @@ class ItemMasterStoreTest extends TestCase
     public function 価格が0は可()
     {
         $data = ItemMaster::factory()->make()->toArray();
+        $data['category'] = 2;
         $data['price'] = 0;
         $response = $this->actingAs(User::find(1))
             ->post(route('item_master.store'), $data)
@@ -165,6 +168,7 @@ class ItemMasterStoreTest extends TestCase
     public function 価格が1000000以上は不可()
     {
         $data = ItemMaster::factory()->make()->toArray();
+        $data['category'] = 2;
         $data['price'] = 1000000;
         $response = $this->actingAs(User::find(1))
             ->post(route('item_master.store'), $data)
@@ -178,6 +182,7 @@ class ItemMasterStoreTest extends TestCase
     public function 価格が全角文字は不可()
     {
         $data = ItemMaster::factory()->make()->toArray();
+        $data['category'] = 2;
         $data['price'] = '１０００';
         $response = $this->actingAs(User::find(1))
             ->post(route('item_master.store'), $data)

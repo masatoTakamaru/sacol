@@ -6,68 +6,248 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Item;
-use App\Models\ItemMaster;
-use App\Models\Student;
 use Illuminate\Support\Arr;
 use Auth;
+use Carbon\Carbon;
+use Vinkla\Hashids\Facades\Hashids;
 
 class ItemStoreTest extends TestCase
 {
     use RefreshDatabase;
     protected $seed = true;
 
+    public function setUp() :void
+    {
+        parent::setUp();
+        $response = $this->actingAs(User::find(1));
+        $auth = Auth::user();
+        $sheet = $auth->sheets()->where([
+            ['year', 2022],
+            ['month', 4],
+        ])->first();
+        $date = Carbon::createFromDate($sheet->year, $sheet->month, 1);
+        $students = $auth->students()
+            ->whereDate('registered_date', '<=', $date)
+            ->whereDate('expired_date', '>=', $date)
+            ->get();
+        $st_id = $students->pluck('id')->toArray();
+        $st = $students->find(Arr::random($st_id));
+        $item_master_id = $auth->item_masters()
+            ->pluck('id')->toArray();
+        $item = $auth->item_masters()
+            ->find(Arr::random($item_master_id))
+            ->toArray();
+        $item['student_id'] = $st->id;
+        $item['sheet_id'] = $sheet->id;
+        $this->item = $item;
+        $this->st = $st;
+        $this->sheet = $sheet;
+
+    }
+
     /**
      * @test
      * @group item
     */
-    public function 科目を登録したら一覧にリダイレクトされる()
+    public function 科目を登録したら編集画面にリダイレクトされる()
     {
-        $response = $this->actingAs(User::find(1));
-        $st_id = Auth::user()->students()
-            ->where('expired_flg', false)
-            ->pluck('id')->toArray();
-        $st = Auth::user()->students()
-            ->find(Arr::random($st_id));
-        $item_master_id = Auth::user()->item_masters()
-            ->pluck('id')->toArray();
-        $item = Auth::user()->item_masters()
-            ->find(Arr::random($item_master_id))
-            ->toArray();
-        $item['student_id'] = $st->id;
-        $item['year'] = 2022;
-        $item['month'] = 4;
-
-        $responset = $this
-            ->post(route('item.store'), $item)
-            ->assertRedirect(route('item_master.index'));
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertRedirect(route('item.edit', [
+                'student' => Hashids::encode($this->st->id),
+                'sheet' => Hashids::encode($this->sheet->id),
+            ]));
+        
     }
 
     /**
      * @test
-     * @group item_master
+     * @group item
     */
-    public function 登録した科目が一覧に表示される()
+    public function 登録した科目が編集画面に表示される()
     {
-        $data = ItemMaster::factory()->make()->toArray();
-        $response = $this->actingAs(User::find(1))
-            ->post(route('item_master.store'), $data);
-
+        $this->item['description'] = 'test_data';
         $response = $this
-            ->get(route('item_master.index'))
-            ->assertSee($data['name']);
+            ->post(route('item.store'), $this->item);
+        $response = $this
+            ->get(route('item.edit', [
+                'student' => Hashids::encode($this->st->id),
+                'sheet' => Hashids::encode($this->sheet->id),
+            ]))
+            ->assertSee($this->item['description']);
     }
     
     /**
      * @test
-     * @group item_master
+     * @group item
     */
     public function コードが空白は不可()
     {
-        $data = ItemMaster::factory()->make()->toArray();
-        $data['code'] = '';
-        $response = $this->actingAs(User::find(1))
-            ->post(route('item_master.store'), $data)
+        $this->item['code'] = '';
+        $response = $this
+            ->post(route('item.store'), $this->item)
             ->assertInValid(['code' => 'コードは、必ず指定してください。']);
     }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function コードが負の数は不可()
+    {
+        $this->item['code'] = -1;
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['code' => 'コードには、1から、9999までの数字を指定してください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function コードが0は不可()
+    {
+        $this->item['code'] = 0;
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['code' => 'コードには、1から、9999までの数字を指定してください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function コードが10000以上は不可()
+    {
+        $this->item['code'] = 10000;
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['code' => 'コードには、1から、9999までの数字を指定してください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function コードが全角文字は不可()
+    {
+        $this->item['code'] = '１００１';
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['code' => 'コードには、整数を指定してください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function コードが数字以外は不可()
+    {
+        $this->item['code'] = '1DDA';
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['code' => 'コードには、整数を指定してください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 種別名が未選択は不可()
+    {
+        $this->item['category'] = '';
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['category' => '種別は、必ず指定してください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 価格が空白は不可()
+    {
+        $this->item['category'] = 2;
+        $this->item['price'] = '';
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['price' => '価格は、必ず指定してください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 価格が負の数は不可()
+    {
+        $this->item['category'] = 2;
+        $this->item['price'] = -1;
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['price' => '価格には、0から、999999までの数字を指定してください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 価格が0は可()
+    {
+        $this->item['category'] = 2;
+        $this->item['price'] = 0;
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertValid();
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 価格が1000000以上は不可()
+    {
+        $this->item['category'] = 2;
+        $this->item['price'] = 1000000;
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['price' => '価格には、0から、999999までの数字を指定してください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 価格が全角文字は不可()
+    {
+        $this->item['category'] = 2;
+        $this->item['price'] = '１０００';
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['price' => '価格には、整数を指定してください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 摘要が空白は可()
+    {
+        $this->item['description'] = '';
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertValid();
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 摘要が51字以上は不可()
+    {
+        $this->item['description'] = str_repeat('あ', 51);
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['description' => '摘要は、50文字以下にしてください。']);
+    }
+
 }

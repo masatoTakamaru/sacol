@@ -17,7 +17,7 @@
                     @foreach ($sheets as $sheet)
                         <tr>
                             <td class="px-8">
-                                <a class="font-bold text-blue-600" href="{{ route('item.index', ['year'=>$sheet->year, 'month'=>$sheet->month]) }}">{{ $sheet->year }} 年 {{ $sheet->month }} 月</a>
+                                <a class="font-bold text-blue-600" href="{{ route('item.index', ['sheet'=>Hashids::encode($sheet->id)]) }}">{{ $sheet->year }} 年 {{ $sheet->month }} 月</a>
                             </td>
                             <td class="px-8">{{ $sheet->enrollment }} 人</td>
                             <td class="px-8 text-right">{{ number_format($sheet->sales) }}</td>

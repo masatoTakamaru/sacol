@@ -32,11 +32,11 @@ Route::put('/student/{student}/unexpired_update',
 Route::resource('/student', 'App\Http\Controllers\StudentController')
     ->middleware(['auth']);
 
-Route::get('/item/{year}/{month}',
+Route::get('/item/{sheet}',
     [App\Http\Controllers\ItemController::class, 'index'])
     ->middleware(['auth'])->name('item.index');
 
-Route::get('/item/{student}/{year}/{month}/{edit_id?}',
+Route::get('/item/{student}/{sheet}/{edit_id?}',
     [App\Http\Controllers\ItemController::class, 'edit'])
     ->middleware(['auth'])->name('item.edit');
 
