@@ -1,6 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2>{{ $st->family_name }}&nbsp;{{ $st->given_name }}:{{ $sheet->year }} 年 {{ $sheet->month }} 月</h2>
+        <div class="flex">
+        <h2>{{ $st->family_name }}&emsp;{{ $st->given_name }}</h2>
+        <p class="ml-6">{{ $sheet->year }}&nbsp;年&nbsp;{{ $sheet->month }}&nbsp;月</p>
+        <p class="ml-6">{{ $count }}&nbsp;科目</p>
+        </div>
     </x-slot>
 
     <div class="flex justify-end">
@@ -156,7 +160,7 @@
     <hr class="my-4">
 
     <h2>科目の新規登録</h2>
-    <div class="flex justify-start mt-4">
+    <div class="flex justify-start mt-4 mb-20">
         @include('item.item_create_form')
     </div>
 

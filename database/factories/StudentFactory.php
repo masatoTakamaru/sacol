@@ -17,7 +17,7 @@ class StudentFactory extends Factory
     public function definition()
     {
         return [
-            'registered_date' => $this->faker->date('Y-m-d'),
+            'registered_date' => '2021-01-01',
             'family_name' => $this->faker->firstName,
             'given_name' => $this->faker->lastName,
             'family_name_kana' => 'アイウエオ',

@@ -22,7 +22,7 @@
                 <option value="">選択してください</option>
                 @foreach ($categories as $cat)
                     @if ($loop->index > 0)
-                        @if (old('category'))
+                        @if (old('category') && old('category') == $loop->index)
                             <option value="{{ $loop->index }}" selected="selected">{{ $cat }}</option>
                         @else
                             <option value="{{ $loop->index }}">{{ $cat }}</option>
@@ -80,6 +80,14 @@
             </td>
         </tr>
     @endif
+    @if (session('error'))
+        <tr>
+            <td></td>
+            <td>
+                <p class="text-red-600">{{ session('error') }}</p>
+            </td>
+        </tr>
+    @endif
     </tbody>
     </table>
     <div class="flex justify-center my-4">
@@ -87,7 +95,6 @@
             <button class="btn mr-4 py-2 px-6 text-sm"><input type="submit" value="新規登録"></input></button>
         </div>
     </div>
-    <hr class="my-4">
 </form>
 
 <script>
@@ -122,11 +129,14 @@
         elem_code.focus();
     });
     //従量課金型科目の場合は価格を表示しない
-    elem_cat.addEventListener('change', ()=> {
+    elem_cat.addEventListener('load', catDisplay());
+    elem_cat.addEventListener('change', catDisplay());
+    function catDisplay() {
         if (elem_cat.value == '1') {
             elem_price.style.display='none';
         } else {
             elem_price.style.display='block';
-        }
-    });
+        }        
+    }
+
 </script>

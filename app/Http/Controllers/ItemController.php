@@ -92,15 +92,24 @@ class ItemController extends Controller
         $st = $auths->students()->find($request->student_id);
         $sheet = $auths->sheets()->find($request->sheet_id);
         if (!$st || !$sheet) return redirect()->route('dashboard'); //例外処理
-        //従量課金型科目のカウント
-        $count = $st->items()->where([
+        //従量課金型科目が12科目を超える場合登録できない
+        $qprice_count = $st->items()->where([
             ['sheet_id', $sheet->id],
             ['category', 1],
         ])->count();
-        //従量課金型科目が12科目を超える場合登録できない
-        if ($request->category == '1' && $count == 12) {
-            
+        if ($request->category == '1' && $qprice_count == 12) {
+            return back()
+                ->withInput()
+                ->with('error', '従量課金型科目はこれ以上登録できません。');
         }
+        //合計が20科目を超える場合登録できない
+        $count = $st->items()->where('sheet_id', $sheet->id)->count();
+        if ($count == 20) {
+            return back()
+                ->withInput()
+                ->with('error', '科目数の上限は20科目です。これ以上登録できません。');
+        }
+        //科目の登録
         $st->items()->create([
             'sheet_id' => $sheet->id,
             'code' => (int) $request->code,
@@ -110,11 +119,11 @@ class ItemController extends Controller
             'description' => $request->description,
         ]);
         //従量課金型科目の設定
-        if ($request->category == '1' && $count < 12) {
+        if ($request->category == '1') {
             $price = $auths->qprices()->where([
                 ['sheet_id', $sheet->id],
                 ['grade', $st->grade],
-                ['qprice', $count],
+                ['qprice', $qprice_count + 1],
             ])->first();
             $st_qprice = $st->items()->where([
                 ['sheet_id', $sheet->id],
@@ -122,7 +131,7 @@ class ItemController extends Controller
             ])->first();
             if($st_qprice) {
                 $st_qprice->update([
-                    'name' => $this->grades[$st->grade] . (string) $count . '教科',
+                    'name' => $this->grades[$st->grade] . (string) $qprice_count + 1 . '教科',
                     'price' => (int) $price->price,
                 ]);
             } else {
@@ -130,13 +139,12 @@ class ItemController extends Controller
                     'sheet_id' => $sheet->id,
                     'code' => 0,
                     'category' => 0,
-                    'name' => $this->grades[$st->grade] . (string) $count . '教科',
+                    'name' => $this->grades[$st->grade] . (string) $qprice_count + 1 . '教科',
                     'price' => (int) $price->price,
                     'description' => '',
                 ]);
             }
         }
-
         //帳票の生徒数・請求額の再計算
         $sheet_controller = app()->make('App\Http\Controllers\SheetController');
         $sheet_controller->update($sheet->id);
@@ -185,6 +193,7 @@ class ItemController extends Controller
             'categories' => $this->categories,
             'edit_id' => $edit_id,
             'fee' => $fee,
+            'count' => $items->count(),
         ]);
 
     }
@@ -255,13 +264,13 @@ class ItemController extends Controller
 
         //従量課金型科目の金額再計算
         if ($item->category == '1') {
-            $count = $st->items()
+            $qprice_count = $st->items()
                 ->where([
                     ['sheet_id', $sheet->id],
                     ['category', 1],
                 ])->count();
             //科目数が0になったら金額科目を削除
-            if ($count == 0) {
+            if ($qprice_count == 0) {
                 $st->items()->where([
                     ['sheet_id', $sheet->id],
                     ['category', 0],
@@ -271,13 +280,13 @@ class ItemController extends Controller
                 $price = Auth::user()->qprices()->where([
                     ['sheet_id', $sheet->id],
                     ['grade', $st->grade],
-                    ['qprice', $count],
+                    ['qprice', $qprice_count],
                 ])->first()->price;
                 $st->items()->where([
                     ['sheet_id', $sheet->id],
                     ['category', 0],
                 ])->first()->update([
-                    'name' => $this->grades[$st->grade] . (string) $count . '教科',
+                    'name' => $this->grades[$st->grade] . (string) $qprice_count . '教科',
                     'price' => (int) $price,
                 ]);
             }

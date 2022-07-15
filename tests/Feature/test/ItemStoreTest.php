@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Student;
 use Illuminate\Support\Arr;
 use Auth;
 use Carbon\Carbon;
@@ -22,7 +23,8 @@ class ItemStoreTest extends TestCase
         $response = $this->actingAs(User::find(1));
         $auth = Auth::user();
         $sheet = $auth->sheets()->find(1);
-        $st = $auth->students()->find(1);
+        $data = Student::factory()->make()->toArray();
+        $st = $auth->students()->create($data);
         $this->item = [
             'sheet_id' => $sheet->id,
             'student_id' => $st->id,
@@ -48,7 +50,6 @@ class ItemStoreTest extends TestCase
                 'student' => Hashids::encode($this->st->id),
                 'sheet' => Hashids::encode($this->sheet->id),
             ]));
-        
     }
 
     /**
@@ -245,12 +246,71 @@ class ItemStoreTest extends TestCase
      * @test
      * @group item
     */
-    public function 従量課金型科目を13個以上登録は不可()
+    public function 従量課金型科目が12個まで登録できる()
     { 
-        $response = $this
-            ->post(route('item.store'), $this->item)
-            ->assertInValid(['description' => '摘要は、50文字以下にしてください。']);
+        $this->item['category'] = 1;
+        for ($i = 0; $i < 11; $i++) {
+            $response = $this->post(route('item.store'), $this->item);
+        }
+        //12個目を登録
+        $this->item['name'] = '12thItem';
+        $response = $this->post(route('item.store'), $this->item);
+        $this->assertDatabaseHas('items', [
+            'name' => '12thItem',
+        ]);
     }
 
+    /**
+     * @test
+     * @group item
+    */
+    public function 従量課金型科目を13個以上登録は不可()
+    { 
+        $this->item['category'] = 1;
+        for ($i = 0; $i < 12; $i++) {
+            $response = $this->post(route('item.store'), $this->item);
+        }
+        //13個目を登録
+        $this->item['name'] = '13thItem';
+        $response = $this->post(route('item.store'), $this->item);
+        $this->assertDatabaseMissing('items', [
+            'name' => '13thItem',
+        ]);
+    }
 
+    /**
+     * @test
+     * @group item
+    */
+    public function 合計20科目まで登録できる()
+    {
+        $this->item['category'] = 2;
+        for ($i = 0; $i < 19; $i++) {
+            $response = $this->post(route('item.store'), $this->item);
+        }
+        //21個目を登録
+        $this->item['name'] = '20thItem';
+        $response = $this->post(route('item.store'), $this->item);
+        $this->assertDatabaseHas('items', [
+            'name' => '20thItem',
+        ]);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 合計21科目以上の登録は不可()
+    {
+        $this->item['category'] = 2;
+        for ($i = 0; $i < 20; $i++) {
+            $response = $this->post(route('item.store'), $this->item);
+        }
+        //21個目を登録
+        $this->item['name'] = '21thItem';
+        $response = $this->post(route('item.store'), $this->item);
+        $this->assertDatabaseMissing('items', [
+            'name' => '21thItem',
+        ]);
+    }
 }
