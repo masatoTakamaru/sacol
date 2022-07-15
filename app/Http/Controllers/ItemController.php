@@ -31,7 +31,7 @@ class ItemController extends Controller
         $auths = Auth::user();
         $sheet = $auths->sheets()->find(Hashids::decode($id)[0]);
         if (!$sheet) return redirect()->route('dashboard'); //例外処理
-        //帳簿の年月に在籍している生徒を抽出
+        //帳票の年月に在籍している生徒を抽出
         $date = Carbon::createFromDate($sheet->year, $sheet->month, 1);
         $students = $auths->students()
             ->whereDate('registered_date', '<=', $date)
@@ -92,6 +92,15 @@ class ItemController extends Controller
         $st = $auths->students()->find($request->student_id);
         $sheet = $auths->sheets()->find($request->sheet_id);
         if (!$st || !$sheet) return redirect()->route('dashboard'); //例外処理
+        //従量課金型科目のカウント
+        $count = $st->items()->where([
+            ['sheet_id', $sheet->id],
+            ['category', 1],
+        ])->count();
+        //従量課金型科目が12科目を超える場合登録できない
+        if ($request->category == '1' && $count == 12) {
+            
+        }
         $st->items()->create([
             'sheet_id' => $sheet->id,
             'code' => (int) $request->code,
@@ -101,11 +110,7 @@ class ItemController extends Controller
             'description' => $request->description,
         ]);
         //従量課金型科目の設定
-        if ($request->category == '1') {
-            $count = $st->items()->where([
-                    ['sheet_id', $sheet->id],
-                    ['category', 1],
-                ])->count();
+        if ($request->category == '1' && $count < 12) {
             $price = $auths->qprices()->where([
                 ['sheet_id', $sheet->id],
                 ['grade', $st->grade],
@@ -122,16 +127,19 @@ class ItemController extends Controller
                 ]);
             } else {
                 $st->items()->create([
+                    'sheet_id' => $sheet->id,
                     'code' => 0,
-                    'year' => (int) $request->year,
-                    'month' => (int) $request->month,
                     'category' => 0,
                     'name' => $this->grades[$st->grade] . (string) $count . '教科',
                     'price' => (int) $price->price,
-                    'description' => $request->description,
+                    'description' => '',
                 ]);
             }
         }
+
+        //帳票の生徒数・請求額の再計算
+        $sheet_controller = app()->make('App\Http\Controllers\SheetController');
+        $sheet_controller->update($sheet->id);
         
         $new_item = new Item;
 
@@ -158,7 +166,7 @@ class ItemController extends Controller
         if (!$st || !$sheet) return redirect()->route('dashboard'); //例外処理
         $new_item = new Item;
 
-        //帳簿の生徒数・請求額の再計算
+        //帳票の生徒数・請求額の再計算
         $sheet_controller = app()->make('App\Http\Controllers\SheetController');
         $sheet_controller->update(Hashids::decode($sheet_id)[0]);
 
@@ -217,7 +225,7 @@ class ItemController extends Controller
             'price' => (int) $request->price,
             'description' => $request->description,
         ]);
-        //帳簿の生徒数・請求額の再計算
+        //帳票の生徒数・請求額の再計算
         $sheet_controller = app()->make('App\Http\Controllers\SheetController');
         $sheet_controller->update($sheet->id);
 
@@ -275,7 +283,7 @@ class ItemController extends Controller
             }
         }
 
-        //帳簿の生徒数・請求額の再計算
+        //帳票の生徒数・請求額の再計算
         $sheet_controller = app()->make('App\Http\Controllers\SheetController');
         $sheet_controller->update($sheet->id);
         

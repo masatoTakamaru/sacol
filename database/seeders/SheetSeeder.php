@@ -19,9 +19,9 @@ class SheetSeeder extends Seeder
         $sheet = new Sheet();
         $sheet->user_id = 1;
         $sheet->year = 2022;
-        $sheet->month = 4;
+        $sheet->month = 2;
         $sheet->enrollment = 10;
-        $sheet->sales = 123456;
+        $sheet->sales = 0;
         $sheet->save();
 
         $sheet = new Sheet();
@@ -31,5 +31,14 @@ class SheetSeeder extends Seeder
         $sheet->enrollment = 10;
         $sheet->sales = 123456;
         $sheet->save();
+
+        $sheet = new Sheet();
+        $sheet->user_id = 1;
+        $sheet->year = 2022;
+        $sheet->month = 4;
+        $sheet->enrollment = 10;
+        $sheet->sales = 123456;
+        $sheet->save();
+
     }
 }

@@ -16,26 +16,15 @@ class SheetStoreTest extends TestCase
      * @test
      * @group sheet
      */
-    public function 帳簿が存在しない場合新規作成のメッセージが表示される()
-    {
-        $response = $this->actingAs(User::find(1))
-            ->get(route('dashboard'))
-            ->assertSee('帳簿がありません。最初の帳簿を作成してください。');
-    }
-
-    /**
-     * @test
-     * @group sheet
-     */
-    public function 帳簿を作成したらダッシュボードに表示される()
+    public function 帳票を作成したらダッシュボードに表示される()
     {
         $response = $this->actingAs(User::find(1))
             ->post(route('sheet.store'),[
-                'year' => 2022,
+                'year' => 2000,
                 'month' => 3,
             ]);
         $response = $this
             ->get('dashboard')
-            ->assertSee('2022 年 3 月');
+            ->assertSee('2000 年 3 月');
     }
 }

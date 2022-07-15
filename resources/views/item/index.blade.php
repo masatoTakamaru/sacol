@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between">
-            <h2>{{ $sheet->year }} 年 {{ $sheet->month }} 月の帳簿（生徒数：{{ $count }} 人）</h2>
+            <h2>{{ $sheet->year }} 年 {{ $sheet->month }} 月の帳票（生徒数：{{ $count }} 人）</h2>
             <a class="text-blue-500" href="{{ route('dashboard') }}">ダッシュボードに戻る</a>
         </div>
     </x-slot>

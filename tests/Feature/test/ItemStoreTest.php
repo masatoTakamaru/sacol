@@ -21,28 +21,19 @@ class ItemStoreTest extends TestCase
         parent::setUp();
         $response = $this->actingAs(User::find(1));
         $auth = Auth::user();
-        $sheet = $auth->sheets()->where([
-            ['year', 2022],
-            ['month', 4],
-        ])->first();
-        $date = Carbon::createFromDate($sheet->year, $sheet->month, 1);
-        $students = $auth->students()
-            ->whereDate('registered_date', '<=', $date)
-            ->whereDate('expired_date', '>=', $date)
-            ->get();
-        $st_id = $students->pluck('id')->toArray();
-        $st = $students->find(Arr::random($st_id));
-        $item_master_id = $auth->item_masters()
-            ->pluck('id')->toArray();
-        $item = $auth->item_masters()
-            ->find(Arr::random($item_master_id))
-            ->toArray();
-        $item['student_id'] = $st->id;
-        $item['sheet_id'] = $sheet->id;
-        $this->item = $item;
+        $sheet = $auth->sheets()->find(1);
+        $st = $auth->students()->find(1);
+        $this->item = [
+            'sheet_id' => $sheet->id,
+            'student_id' => $st->id,
+            'code' => 1,
+            'category' => 1,
+            'name' => 'testName',
+            'price' => 1234,
+            'description' => '',
+        ];
         $this->st = $st;
         $this->sheet = $sheet;
-
     }
 
     /**
@@ -249,5 +240,17 @@ class ItemStoreTest extends TestCase
             ->post(route('item.store'), $this->item)
             ->assertInValid(['description' => '摘要は、50文字以下にしてください。']);
     }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 従量課金型科目を13個以上登録は不可()
+    { 
+        $response = $this
+            ->post(route('item.store'), $this->item)
+            ->assertInValid(['description' => '摘要は、50文字以下にしてください。']);
+    }
+
 
 }

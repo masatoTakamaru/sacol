@@ -30,6 +30,16 @@
                             </td>
                             <td class="px-8">{{ $sheet->enrollment }} 人</td>
                             <td class="px-8 text-right">{{ number_format($sheet->sales) }}</td>
+                            @if ($loop->index == 0)
+                                <td class="px-8">
+                                    <form action="{{ route('sheet.destroy', ['sheet' => $sheet->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button class="btn-white mr-4 py-1 px-6 text-sm"><input type="submit" value="削除"></input></button>
+                                    </form>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>
@@ -37,7 +47,7 @@
         </div>
     @else
         <div>
-            <p class="mb-8">帳簿がありません。最初の帳簿を作成してください。</p>
+            <p class="mb-8">帳票がありません。最初の帳票を作成してください。</p>
             <form action="{{ route('sheet.store') }}" method="POST">
                 @csrf
 

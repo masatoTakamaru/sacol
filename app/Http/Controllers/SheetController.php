@@ -21,7 +21,7 @@ class SheetController extends Controller
 
         $this->update($sheet->id);
 
-        session()->flash('flashmessage', '帳簿が作成されました。');
+        session()->flash('flashmessage', '帳票が作成されました。');
 
         return redirect()->route('dashboard');
     }
@@ -59,5 +59,24 @@ class SheetController extends Controller
             'enrollment' =>  $students->count(),
             'sales' => $sales,
         ]);
+
+        return $sales;
+    }
+
+    public function destroy($id)
+    {
+        $auths = Auth::user();
+        $sheet = $auths->sheets()->find($id);
+        if (!$sheet) return redirect()->route('dashboard'); //例外処理
+
+        //帳票に関連する科目も削除
+        $auths->items()->where('sheet_id', $sheet->id)->delete();
+
+        $sheet->delete();
+
+        session()->flash('flashmessage', '帳票が削除されました。');
+
+        return redirect()->route('dashboard');
+
     }
 }

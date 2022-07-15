@@ -24,12 +24,8 @@ class DashboardController extends Controller
             });
 
             //最新の帳票
-            $date = Carbon::create(
-                $sheets->first()->year,
-                $sheets->first()->month,
-                1
-            )
-            ->addMonthNoOverflow();
+            $date = Carbon::create($sheets->first()->year, $sheets->first()->month, 1)
+                ->addMonthNoOverflow();
             $year = $date->year;
             $month = $date->month;
         } else {
