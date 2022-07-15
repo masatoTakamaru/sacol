@@ -30,8 +30,7 @@ class ItemController extends Controller
     {
         $auths = Auth::user();
         $sheet = $auths->sheets()->find(Hashids::decode($id)[0]);
-        //帳簿が存在しない場合はダッシュボードにリダイレクト
-        if (!$sheet) return redirect()->route('dashboard');
+        if (!$sheet) return redirect()->route('dashboard'); //例外処理
         //帳簿の年月に在籍している生徒を抽出
         $date = Carbon::createFromDate($sheet->year, $sheet->month, 1);
         $students = $auths->students()
@@ -92,6 +91,7 @@ class ItemController extends Controller
         $auths = Auth::user();
         $st = $auths->students()->find($request->student_id);
         $sheet = $auths->sheets()->find($request->sheet_id);
+        if (!$st || !$sheet) return redirect()->route('dashboard'); //例外処理
         $st->items()->create([
             'sheet_id' => $sheet->id,
             'code' => (int) $request->code,
@@ -155,11 +155,18 @@ class ItemController extends Controller
         $st = $auths->students()->find((int) Hashids::decode($id)[0]);
         $sheet = $auths->sheets()->find(Hashids::decode($sheet_id)[0]);
         $items = $st->items->where('sheet_id', Hashids::decode($sheet_id)[0]);
+        if (!$st || !$sheet) return redirect()->route('dashboard'); //例外処理
         $new_item = new Item;
 
         //帳簿の生徒数・請求額の再計算
         $sheet_controller = app()->make('App\Http\Controllers\SheetController');
         $sheet_controller->update(Hashids::decode($sheet_id)[0]);
+
+        //合計額
+        $fee = $items->where('category', 0)->first()->price ?? 0
+            + $items->where('category', 2)->sum('price')
+            + $items->where('category', 3)->sum('price')
+            - $items->where('category', 4)->sum('price');
 
         return view('item.edit', [
             'st' => $st,
@@ -169,6 +176,7 @@ class ItemController extends Controller
             'grades' => $this->grades,
             'categories' => $this->categories,
             'edit_id' => $edit_id,
+            'fee' => $fee,
         ]);
 
     }
@@ -201,6 +209,7 @@ class ItemController extends Controller
         $auths = Auth::user();
         $item = $auths->items()->find($id);
         $sheet = $auths->sheets()->find($item->sheet_id);
+        if (!$item || !$sheet) return redirect()->route('dashboard'); //例外処理
         $item->update([
             'code' => $item->code,
             'category' => $item->category,
@@ -232,28 +241,38 @@ class ItemController extends Controller
         $item = $auth->items()->find($id);
         $sheet = $auth->sheets()->find($item->sheet_id);
         $st = $item->student;
+        if (!$item || !$sheet) return redirect()->route('dashboard'); //例外処理
 
         $item->delete();
 
+        //従量課金型科目の金額再計算
         if ($item->category == '1') {
             $count = $st->items()
                 ->where([
                     ['sheet_id', $sheet->id],
                     ['category', 1],
                 ])->count();
-            $price = Auth::user()->qprices()->where([
-                ['sheet_id', $sheet->id],
-                ['grade', $st->grade],
-                ['qprice', $count],
-            ])->first()->price;
-            $st->items()
-                ->where([
+            //科目数が0になったら金額科目を削除
+            if ($count == 0) {
+                $st->items()->where([
+                    ['sheet_id', $sheet->id],
+                    ['category', 0],
+                ])->first()->delete();
+            } else {
+                //金額の再計算
+                $price = Auth::user()->qprices()->where([
+                    ['sheet_id', $sheet->id],
+                    ['grade', $st->grade],
+                    ['qprice', $count],
+                ])->first()->price;
+                $st->items()->where([
                     ['sheet_id', $sheet->id],
                     ['category', 0],
                 ])->first()->update([
                     'name' => $this->grades[$st->grade] . (string) $count . '教科',
                     'price' => (int) $price,
                 ]);
+            }
         }
 
         //帳簿の生徒数・請求額の再計算

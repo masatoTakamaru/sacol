@@ -3,10 +3,6 @@
         <h2>{{ $st->family_name }}&nbsp;{{ $st->given_name }}:{{ $sheet->year }} 年 {{ $sheet->month }} 月</h2>
     </x-slot>
 
-    @foreach($errors->all() as $error)
-        <p>{{ $error }}</p>
-    @endforeach
-
     <div class="flex justify-end">
         <a class="btn-white py-1 px-6" href="{{ route('item.index', ['sheet' => Hashids::encode($sheet->id)]) }}">戻る</a>
     </div>
@@ -53,23 +49,25 @@
     @endforeach
 
     {{-- 従量課金型科目の価格 --}}
-    <tr class="border-t-2">
-        @if ($edit_id && $items->where('category', 0)->first()->id == Hashids::decode($edit_id)[0])
-            @include('item.item_edit_form', ['item' => $items->where('category', 0)->first()])
-        @else
-            <td class="pr-2 text-center">
-                <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'sheet' => Hashids::encode($sheet->id), 'edit_id' => Hashids::encode($items->where('category', 0)->first()->id)]) }}">
-                    @include('item.edit_button')
-                </a>
-            </td>
-            <td></td>
-            <td class="pr-4">{{ $items->where('category', 0)->first()->name }}</td>
-            <td class="pr-4 text-right font-bold">
-                {{ number_format($items->where('category',0)->first()->price) }}
-            </td>
-            <td>{{ $items->where('category',0)->first()->description }}</td>
-        @endif
-    </tr>
+    @if ($items->where('category', 1)->count())
+        <tr class="border-t-2">
+            @if ($edit_id && $items->where('category', 0)->first()->id == Hashids::decode($edit_id)[0])
+                @include('item.item_edit_form', ['item' => $items->where('category', 0)->first()])
+            @else
+                <td class="pr-2 text-center">
+                    <a href="{{ route('item.edit',['student' => Hashids::encode($st->id), 'sheet' => Hashids::encode($sheet->id), 'edit_id' => Hashids::encode($items->where('category', 0)->first()->id)]) }}">
+                        @include('item.edit_button')
+                    </a>
+                </td>
+                <td></td>
+                <td class="pr-4">{{ $items->where('category', 0)->first()->name }}</td>
+                <td class="pr-4 text-right font-bold">
+                    {{ number_format($items->where('category',0)->first()->price) }}
+                </td>
+                <td>{{ $items->where('category',0)->first()->description }}</td>
+            @endif
+        </tr>
+    @endif
 
     {{-- 単独課金型科目 --}}
     <tr>
@@ -148,14 +146,7 @@
         <td></td>
         <td></td>
         <td class="font-bold">請求額</td>
-        <td class="font-bold text-green-600">
-            {{ number_format(
-                $items->where('category', 0)->first()->price
-                + $items->where('category', 2)->sum('price')
-                + $items->where('category', 3)->sum('price')
-                - $items->where('category', 4)->sum('price')
-            )}}
-        </td>
+        <td class="font-bold text-green-600">{{ number_format($fee) }}</td>
     </tr>
     
     </tbody>
@@ -164,7 +155,7 @@
 
     <hr class="my-4">
 
-    {{-- 科目の新規登録 --}}
+    <h2>科目の新規登録</h2>
     <div class="flex justify-start mt-4">
         @include('item.item_create_form')
     </div>

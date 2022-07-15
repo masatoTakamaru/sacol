@@ -12,12 +12,14 @@ class SheetController extends Controller
     public function store(SheetRequest $request)
     {
         $auths = Auth::user();
-        $auths->sheets()->create([
+        $sheet = $auths->sheets()->create([
             'year' => (int) $request->year,
             'month' => (int) $request->month,
             'enrollment' => 0,
             'sales' => 0,
         ]);
+
+        $this->update($sheet->id);
 
         session()->flash('flashmessage', '帳簿が作成されました。');
 
@@ -28,6 +30,7 @@ class SheetController extends Controller
     {
         $auths = Auth::user();
         $sheet = $auths->sheets()->find($id);
+        if (!$sheet) return redirect()->route('dashboard'); //例外処理
         
         $date = Carbon::createFromDate($sheet->year, $sheet->month, 1);
         $students = $auths->students()

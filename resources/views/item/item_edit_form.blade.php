@@ -1,4 +1,3 @@
-<td></td>
 <td colspan="6">
     <div class="bg-gray-300 rounded">
 
@@ -90,16 +89,17 @@
 
         </div>
     </form>
-    <form action="{{ route('item.destroy', ['item' => $item->id]) }}" method="POST">
-        @csrf
-        @method('DELETE')
+    @unless ($item->category == 0)
+        <form action="{{ route('item.destroy', ['item' => $item->id]) }}" method="POST">
+            @csrf
+            @method('DELETE')
 
-        <div class="flex justify-between items-center p-4">
-            <p>科目の削除</p>
-            <button id="item-delete" class="btn-white py-2 px-8 text-sm"><input type="submit" value="削除"></button>
-        </div>
-    </form>
-    
+            <div class="flex justify-between items-center p-4">
+                <p>科目の削除</p>
+                <button id="item-delete" class="btn-white py-2 px-8 text-sm"><input type="submit" value="削除"></button>
+            </div>
+        </form>
+    @endunless
     </div>
 </td>
 
