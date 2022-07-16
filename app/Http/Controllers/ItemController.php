@@ -28,12 +28,12 @@ class ItemController extends Controller
 
     public function index($id)
     {
-        $auths = Auth::user();
-        $sheet = $auths->sheets()->find(Hashids::decode($id)[0]);
+        $user = Auth::user();
+        $sheet = $user->sheets()->find(Hashids::decode($id)[0]);
         if (!$sheet) return redirect()->route('dashboard'); //例外処理
         //帳票の年月に在籍している生徒を抽出
         $date = Carbon::createFromDate($sheet->year, $sheet->month, 1);
-        $students = $auths->students()
+        $students = $user->students()
             ->whereDate('registered_date', '<=', $date)
             ->whereDate('expired_date', '>=', $date)
             ->get();
@@ -88,9 +88,9 @@ class ItemController extends Controller
      */
     public function store(ItemRequest $request)
     {
-        $auths = Auth::user();
-        $st = $auths->students()->find($request->student_id);
-        $sheet = $auths->sheets()->find($request->sheet_id);
+        $user = Auth::user();
+        $st = $user->students()->find($request->student_id);
+        $sheet = $user->sheets()->find($request->sheet_id);
         if (!$st || !$sheet) return redirect()->route('dashboard'); //例外処理
         //従量課金型科目が12科目を超える場合登録できない
         $qprice_count = $st->items()->where([
@@ -120,7 +120,7 @@ class ItemController extends Controller
         ]);
         //従量課金型科目の設定
         if ($request->category == '1') {
-            $price = $auths->qprices()->where([
+            $price = $user->qprices()->where([
                 ['sheet_id', $sheet->id],
                 ['grade', $st->grade],
                 ['qprice', $qprice_count + 1],
@@ -167,9 +167,9 @@ class ItemController extends Controller
      */
     public function edit($id, $sheet_id, $edit_id = null)
     {
-        $auths = Auth::user();
-        $st = $auths->students()->find((int) Hashids::decode($id)[0]);
-        $sheet = $auths->sheets()->find(Hashids::decode($sheet_id)[0]);
+        $user = Auth::user();
+        $st = $user->students()->find((int) Hashids::decode($id)[0]);
+        $sheet = $user->sheets()->find(Hashids::decode($sheet_id)[0]);
         $items = $st->items->where('sheet_id', Hashids::decode($sheet_id)[0]);
         if (!$st || !$sheet) return redirect()->route('dashboard'); //例外処理
         $new_item = new Item;
@@ -223,9 +223,9 @@ class ItemController extends Controller
                 ]);
         }
 
-        $auths = Auth::user();
-        $item = $auths->items()->find($id);
-        $sheet = $auths->sheets()->find($item->sheet_id);
+        $user = Auth::user();
+        $item = $user->items()->find($id);
+        $sheet = $user->sheets()->find($item->sheet_id);
         if (!$item || !$sheet) return redirect()->route('dashboard'); //例外処理
         $item->update([
             'code' => $item->code,
@@ -254,9 +254,9 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        $auth = Auth::user();
-        $item = $auth->items()->find($id);
-        $sheet = $auth->sheets()->find($item->sheet_id);
+        $user = Auth::user();
+        $item = $user->items()->find($id);
+        $sheet = $user->sheets()->find($item->sheet_id);
         $st = $item->student;
         if (!$item || !$sheet) return redirect()->route('dashboard'); //例外処理
 

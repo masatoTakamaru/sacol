@@ -27,11 +27,11 @@ class ItemMasterController extends Controller
 
     public function index()
     {
-        $auths = Auth::user();
-        $subject_qprices = $auths->item_masters->where('category', '1')->sortBy('code');
-        $subject_singles = $auths->item_masters->where('category', '2')->sortBy('code');
-        $charges = $auths->item_masters->where('category', '3')->sortBy('code');
-        $discounts = $auths->item_masters->where('category', '4')->sortBy('code');
+        $user = Auth::user();
+        $subject_qprices = $user->item_masters->where('category', '1')->sortBy('code');
+        $subject_singles = $user->item_masters->where('category', '2')->sortBy('code');
+        $charges = $user->item_masters->where('category', '3')->sortBy('code');
+        $discounts = $user->item_masters->where('category', '4')->sortBy('code');
 
         return view('item_master.index', [
             'subject_qprices' => $subject_qprices,
@@ -64,8 +64,8 @@ class ItemMasterController extends Controller
      */
     public function store(ItemMasterRequest $request)
     {
-        $auths = Auth::user();
-        $auths->item_masters()->create([
+        $user = Auth::user();
+        $user->item_masters()->create([
             'code' => (int) $request->code,
             'category' => (int) $request->category,
             'name' => $request->name,
@@ -86,8 +86,8 @@ class ItemMasterController extends Controller
      */
     public function edit($id)
     {
-        $auths = Auth::user();
-        $item_master = $auths->item_masters()->find((int) Hashids::decode($id)[0]);
+        $user = Auth::user();
+        $item_master = $user->item_masters()->find((int) Hashids::decode($id)[0]);
         return view('item_master.edit', [
             'item_master' => $item_master,
             'categories' => $this->categories,
@@ -103,8 +103,8 @@ class ItemMasterController extends Controller
      */
     public function update(ItemMasterRequest $request, $id)
     {
-        $auths = Auth::user();
-        $item_master = $auths->item_masters()->find($id)->update([
+        $user = Auth::user();
+        $item_master = $user->item_masters()->find($id)->update([
             'code' => (int) $request->code,
             'category' => (int) $request->category,
             'name' => $request->name,
@@ -125,8 +125,8 @@ class ItemMasterController extends Controller
      */
     public function destroy($id)
     {
-        $auths = Auth::user();
-        $auths->item_masters()->find($id)->delete();
+        $user = Auth::user();
+        $user->item_masters()->find($id)->delete();
 
         session()->flash('flashmessage', '科目が削除されました。');
 
@@ -135,8 +135,8 @@ class ItemMasterController extends Controller
 
     public function search($code)
     {
-        $auths = Auth::user();
-        $item_master = $auths->item_masters()->where('code', $code)->first();
+        $user = Auth::user();
+        $item_master = $user->item_masters()->where('code', $code)->first();
         return response()->json(
             $item_master,
             200,

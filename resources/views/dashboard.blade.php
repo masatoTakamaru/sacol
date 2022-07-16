@@ -8,8 +8,6 @@
             <form action="{{ route('sheet.store') }}" method="POST">
                 @csrf
 
-                <input type="hidden" name="year" value="{{ $year }}"></input>
-                <input type="hidden" name="month" value="{{ $month }}"></input>
                 <button class="btn mr-4 py-2 px-6 text-sm"><input type="submit" value="帳票の新規作成"></input></button>
             </form>
         </div>

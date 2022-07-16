@@ -21,10 +21,10 @@ class ItemStoreTest extends TestCase
     {
         parent::setUp();
         $response = $this->actingAs(User::find(1));
-        $auth = Auth::user();
-        $sheet = $auth->sheets()->find(1);
+        $user = Auth::user();
+        $sheet = $user->sheets()->find(1);
         $data = Student::factory()->make()->toArray();
-        $st = $auth->students()->create($data);
+        $st = $user->students()->create($data);
         $this->item = [
             'sheet_id' => $sheet->id,
             'student_id' => $st->id,

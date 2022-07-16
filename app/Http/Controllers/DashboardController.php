@@ -11,9 +11,8 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        $auths = Auth::user();
-        $sheets = $auths->sheets;
-
+        $user = Auth::user();
+        $sheets = $user->sheets;
         //帳票を年月の新しい方から順に並べかえ
         if($sheets->count()) {
             $sheets = $sheets->sort(function($first, $second) {
@@ -22,21 +21,8 @@ class DashboardController extends Controller
                 }
                 return $first['year'] < $second['year'] ? 1 : -1;
             });
-
-            //最新の帳票
-            $date = Carbon::create($sheets->first()->year, $sheets->first()->month, 1)
-                ->addMonthNoOverflow();
-            $year = $date->year;
-            $month = $date->month;
-        } else {
-            $year = null;
-            $month = null;
         }
 
-        return view('dashboard', [
-            'sheets' => $sheets,
-            'year' => $year,
-            'month' => $month,
-        ]);
+        return view('dashboard', ['sheets' => $sheets]);
     }    
 }

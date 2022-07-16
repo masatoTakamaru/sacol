@@ -20,28 +20,28 @@ class ItemDestroyTest extends TestCase
     {
         parent::setUp();
         $response = $this->actingAs(User::find(1));
-        $auth = Auth::user();
-        $sheet = $auth->sheets()->where([
+        $user = Auth::user();
+        $sheet = $user->sheets()->where([
             ['year', 2022],
             ['month', 4],
         ])->first();
         $date = Carbon::createFromDate($sheet->year, $sheet->month, 1);
-        $students = $auth->students()
+        $students = $user->students()
             ->whereDate('registered_date', '<=', $date)
             ->whereDate('expired_date', '>=', $date)
             ->get();
         $st_id = $students->pluck('id')->toArray();
         $st = $students->find(Arr::random($st_id));
-        $item_master_id = $auth->item_masters()
+        $item_master_id = $user->item_masters()
             ->pluck('id')->toArray();
-        $item = $auth->item_masters()
+        $item = $user->item_masters()
             ->find(Arr::random($item_master_id))
             ->toArray();
         $item['student_id'] = $st->id;
         $item['sheet_id'] = $sheet->id;
         $response = $this
             ->post(route('item.store'), $item);
-        $item_posted = $auth->items()->where([
+        $item_posted = $user->items()->where([
             ['student_id', $st->id],
             ['sheet_id', $sheet->id],
             ['code', $item['code']],

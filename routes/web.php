@@ -60,10 +60,10 @@ Route::resource('/item_master',
     ['except' => ['show']])
     ->middleware(['auth']);
 
-Route::get('/qprice', [App\Http\Controllers\QpriceController::class, 'edit'])
+Route::get('/qprice/{sheet}/{grade}', [App\Http\Controllers\QpriceController::class, 'edit'])
     ->middleware(['auth'])->name('qprice.edit');
 
-Route::put('/qprice', [App\Http\Controllers\QpriceController::class, 'update'])
+Route::put('/qprice/{sheet}/{grade}', [App\Http\Controllers\QpriceController::class, 'update'])
     ->middleware(['auth'])->name('qprice.update');
 
 Route::resource('/sheet',

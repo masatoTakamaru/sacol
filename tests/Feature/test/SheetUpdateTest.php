@@ -32,9 +32,9 @@ class SheetUpdateTest extends TestCase
                 'email' => '',
                 'remarks' => '',
             ]);
-        $auths = Auth::user();
-        $this->sheet = $auths->sheets()->find(1);
-        $this->st = $auths->students()->where([
+        $user = Auth::user();
+        $this->sheet = $user->sheets()->find(1);
+        $this->st = $user->students()->where([
             ['family_name', '田中'],
             ['given_name', '太郎'],
         ])->first();
@@ -49,7 +49,7 @@ class SheetUpdateTest extends TestCase
                 'price' => 0,
                 'description' => '',
             ]);
-        $this->expect = $auths->sheets()->find(1)->sales;
+        $this->expect = $user->sheets()->find(1)->sales;
     }
 
     /**
@@ -68,8 +68,8 @@ class SheetUpdateTest extends TestCase
                 'price' => 1234,
                 'description' => '',
             ]);
-        $auths = Auth::user();
-        $sheet = $auths->sheets()->find(1);
+        $user = Auth::user();
+        $sheet = $user->sheets()->find(1);
         $response = $this
             ->assertSame(1234, $sheet->sales);
     }
@@ -111,8 +111,8 @@ class SheetUpdateTest extends TestCase
                 'description' => '',
             ]);
 
-        $auths = Auth::user();
-        $sheet = $auths->sheets()->find(1);
+        $user = Auth::user();
+        $sheet = $user->sheets()->find(1);
         $response= $this
             ->assertSame(2500, $sheet->sales);
     }
