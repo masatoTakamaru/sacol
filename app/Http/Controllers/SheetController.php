@@ -11,10 +11,45 @@ class SheetController extends Controller
 {
     public function store(SheetRequest $request)
     {
-        $auths = Auth::user();
-        $sheet = $auths->sheets()->create([
-            'year' => (int) $request->year,
-            'month' => (int) $request->month,
+        $user = Auth::user();
+        $sheets = $user->sheets;
+
+        //前月の帳票が存在する場合，前月の帳票を引き継ぎ
+        if($sheets->count()) {
+            //帳票を年月の新しい方から順に並べかえ
+            $sheets = $sheets->sort(function($first, $second) {
+                if($first['year'] == $second['year']) {
+                    return $first['month'] < $second['month'] ? 1 : -1;
+                }
+                return $first['year'] < $second['year'] ? 1 : -1;
+            });
+            //翌月の帳票の年月を取得
+            $date = Carbon::create($sheets->first()->year, $sheets->first()->month, 1)
+                ->addMonthNoOverflow();
+            $year = $date->year;
+            $month = $date->month;
+            //科目の引き継ぎ
+            $students = $user->students()
+                ->whereDate('registered_date', '<=', $date)
+                ->whereDate('expired_date', '>=', $date)
+                ->get();
+            foreach ($students as $st) {
+                $items = $st->items->where([
+                    ['sheet_id', ]
+                ]);
+            }
+        } else {
+            $year = null;
+            $month = null;
+        }
+
+
+            
+
+    
+        $sheet = $user->sheets()->create([
+            'year' => (int) $date->year,
+            'month' => (int) $date->month,
             'enrollment' => 0,
             'sales' => 0,
         ]);
@@ -28,12 +63,12 @@ class SheetController extends Controller
 
     public function update($id)
     {
-        $auths = Auth::user();
-        $sheet = $auths->sheets()->find($id);
+        $user = Auth::user();
+        $sheet = $user->sheets()->find($id);
         if (!$sheet) return redirect()->route('dashboard'); //例外処理
         
         $date = Carbon::createFromDate($sheet->year, $sheet->month, 1);
-        $students = $auths->students()
+        $students = $user->students()
             ->whereDate('registered_date', '<=', $date)
             ->whereDate('expired_date', '>=', $date)
             ->get();
@@ -65,12 +100,12 @@ class SheetController extends Controller
 
     public function destroy($id)
     {
-        $auths = Auth::user();
-        $sheet = $auths->sheets()->find($id);
+        $user = Auth::user();
+        $sheet = $user->sheets()->find($id);
         if (!$sheet) return redirect()->route('dashboard'); //例外処理
 
         //帳票に関連する科目も削除
-        $auths->items()->where('sheet_id', $sheet->id)->delete();
+        $user->items()->where('sheet_id', $sheet->id)->delete();
 
         $sheet->delete();
 
