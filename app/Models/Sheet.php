@@ -20,4 +20,9 @@ class Sheet extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function qprices()
+    {
+        return $this->hasMany(Qprice::class);
+    }
 }

@@ -121,7 +121,6 @@ class ItemController extends Controller
         //従量課金型科目の設定
         if ($request->category == '1') {
             $price = $user->qprices()->where([
-                ['sheet_id', $sheet->id],
                 ['grade', $st->grade],
                 ['qprice', $qprice_count + 1],
             ])->first();
@@ -278,7 +277,6 @@ class ItemController extends Controller
             } else {
                 //金額の再計算
                 $price = Auth::user()->qprices()->where([
-                    ['sheet_id', $sheet->id],
                     ['grade', $st->grade],
                     ['qprice', $qprice_count],
                 ])->first()->price;

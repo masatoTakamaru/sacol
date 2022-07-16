@@ -10,8 +10,6 @@ class Qprice extends Model
     use HasFactory;
 
     protected $fillable = [
-        'year',
-        'month',
         'grade',
         'qprice',
         'price',

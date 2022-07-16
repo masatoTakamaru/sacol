@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\SheetRequest;
 use Auth;
 use Carbon\Carbon;
+use App\Models\Qprice;
 
 class SheetController extends Controller
 {
@@ -23,38 +24,51 @@ class SheetController extends Controller
                 }
                 return $first['year'] < $second['year'] ? 1 : -1;
             });
-            //翌月の帳票の年月を取得
+            $latest_sheet = $sheets->first(); //最新の帳票
+            //翌月の帳票を作成
             $date = Carbon::create($sheets->first()->year, $sheets->first()->month, 1)
                 ->addMonthNoOverflow();
-            $year = $date->year;
-            $month = $date->month;
+            $new_sheet = $user->sheets()->create([
+                'year' => (int) $date->year,
+                'month' => (int) $date->month,
+                'enrollment' => 0,
+                'sales' => 0,
+            ]);
             //科目の引き継ぎ
             $students = $user->students()
                 ->whereDate('registered_date', '<=', $date)
                 ->whereDate('expired_date', '>=', $date)
                 ->get();
             foreach ($students as $st) {
-                $items = $st->items->where([
-                    ['sheet_id', ]
-                ]);
+                $new_items = [];
+                $items = $st->items
+                    ->where('sheet_id', $latest_sheet->id);
+                foreach ($items as $item) {
+                    array_push($new_items, [
+                        'sheet_id' => $new_sheet->id,
+                        'code' => $item->code,
+                        'category' => $item->category,
+                        'name' => $item->name,
+                        'price' => $item->price,
+                        'description' => $item->description,
+                    ]);
+                }
+                $st->items()->createMany($new_items);
             }
+            //帳票の再計算
+            $this->update($new_sheet->id);
         } else {
-            $year = null;
-            $month = null;
+            //前月の帳票が存在しない場合，最初の帳票を新規作成
+            $date = Carbon::create($request->year, $request->month, 1);
+            $new_sheet = $user->sheets()->create([
+                'year' => (int) $date->year,
+                'month' => (int) $date->month,
+                'enrollment' => 0,
+                'sales' => 0,
+            ]);
+            //帳票の再計算
+            $this->update($new_sheet->id);
         }
-
-
-            
-
-    
-        $sheet = $user->sheets()->create([
-            'year' => (int) $date->year,
-            'month' => (int) $date->month,
-            'enrollment' => 0,
-            'sales' => 0,
-        ]);
-
-        $this->update($sheet->id);
 
         session()->flash('flashmessage', '帳票が作成されました。');
 

@@ -74,15 +74,13 @@ class User extends Authenticatable
         return $this->hasManyThrough(Item::class, Student::class);
     }
 
-    public function qprices()
-    {
-        return $this->hasMany(Qprice::class);
-    }
-
     public function sheets()
     {
         return $this->hasMany(Sheet::class);
     }
 
-
+    public function qprices()
+    {
+        return $this->hasMany(Qprice::class);
+    }
 }
