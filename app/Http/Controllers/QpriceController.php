@@ -15,30 +15,14 @@ class QpriceController extends Controller
         '高校３年',
     ];
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit()
+    public function edit($grade)
     {
         $user = Auth::user();
-        $qprices = $user->qprices;
+        $qprices = $user->qprices->where('grade', $grade);
         return view('qprice.edit', [
             'qprices' => $qprices,
             'grades' => $this->grades,
+            'grade' => (int) $grade,
         ]);
     }
 

@@ -5,10 +5,10 @@
  
     <div class="flex justify-end">
         <a class="text-blue-500 py-4 mr-6" href="{{ route('item_master.create') }}">科目の新規登録</a>
-        <a class="text-blue-500 py-4 mr-6" href="{{ route('qprice.edit') }}">従量課金型科目の設定</a>
+        <a class="text-blue-500 py-4 mr-6" href="{{ route('qprice.edit', ['grade' => 0]) }}">従量課金型科目の設定</a>
     </div>
     
-    <div class="flex justify-center">
+    <div class="flex justify-center mb-20">
     <table>
     <thead>
     <tr>
