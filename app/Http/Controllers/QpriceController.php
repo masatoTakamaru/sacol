@@ -26,16 +26,17 @@ class QpriceController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, $grade)
     {
-        //
+        $user = Auth::user();
+        $qprices = $user->qprices->where('grade', $grade);
+        foreach ($request->price as $key => $value) {
+            $qp = $qprices->where('qprice', $key)->first();
+            $qp->update(['price' => $value]);
+        }
+        session()->flash('flashmessage', '価格が更新されました。');
+
+        return redirect()->route('qprice.edit', ['grade' => $grade]);
     }
 
     /**
