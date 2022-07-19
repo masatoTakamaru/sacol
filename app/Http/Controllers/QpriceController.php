@@ -38,15 +38,4 @@ class QpriceController extends Controller
 
         return redirect()->route('qprice.edit', ['grade' => $grade]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
