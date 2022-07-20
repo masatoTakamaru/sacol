@@ -16,7 +16,7 @@ class SheetStoreTest extends TestCase
      * @test
      * @group sheet
      */
-    public function 帳票を作成したらダッシュボードに表示される()
+    public function 新規帳票が作成できる()
     {
         $response = $this->actingAs(User::find(1))
             ->post(route('sheet.store'),[
@@ -24,7 +24,6 @@ class SheetStoreTest extends TestCase
                 'month' => 1,
             ]);
         $response = $this
-            ->get('dashboard')
-            ->assertSee('2022 年 5 月');
+            ->assertDatabaseHas('sheets', ['month' => 5]);
     }
 }
