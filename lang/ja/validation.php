@@ -139,26 +139,18 @@ return [
         'given_name_kana' => '生徒名フリガナ',
         'gender' => '性別',
         'grade' => '学年',
-        'birth_date' => '生年月日',
-        'school_attended' => '学校名',
-        'guardian_family_name' => '保護者姓',
-        'guardian_given_name' => '保護者名',
-        'guardian_family_name_kana' => '保護者姓フリガナ',
-        'guardian_given_name_kana' => '保護者名フリガナ',
-        'phone1' => '電話番号１',
-        'phone1_relationship' => '続柄',
-        'phone2' => '電話番号２',
-        'phone2_relationship' => '続柄',
         'email' => 'メールアドレス',
         'remarks' => '備考',
         'code' => 'コード',
         'category' => '種別',
         'name' => '科目名',
+        'price.*' => '価格',
         'price' => '価格',
         'description' => '摘要',
+        'password' => 'パスワード',
     ],
 
-    'custom'               => [
+    'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
@@ -167,18 +159,6 @@ return [
         ],
         'given_name_kana' => [
             'regex' => '全角カタカナで入力してください。',
-        ],
-        'guardian_family_name_kana' => [
-            'regex' => '全角カタカナで入力してください。',
-        ],
-        'guardian_given_name_kana' => [
-            'regex' => '全角カタカナで入力してください。',
-        ],
-        'phone1' => [
-            'regex' => '正しい電話番号を入力してください。',
-        ],
-        'phone2' => [
-            'regex' => '正しい電話番号を入力してください。',
         ],
     ],
 ];

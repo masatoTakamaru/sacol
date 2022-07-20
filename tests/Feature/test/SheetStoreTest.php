@@ -21,10 +21,10 @@ class SheetStoreTest extends TestCase
         $response = $this->actingAs(User::find(1))
             ->post(route('sheet.store'),[
                 'year' => 2000,
-                'month' => 3,
+                'month' => 1,
             ]);
         $response = $this
             ->get('dashboard')
-            ->assertSee('2000 年 3 月');
+            ->assertSee('2022 年 5 月');
     }
 }

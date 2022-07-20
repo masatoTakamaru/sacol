@@ -146,6 +146,7 @@ class ItemMasterUpdateTest extends TestCase
         $response = $this->actingAs(User::find(1));
         $data = ItemMaster::factory()->make()->toArray();
         $item = Auth::user()->item_masters()->create($data);
+        $data['category'] = 2;
         $data['price'] = '';
         $response = $this
             ->put(route('item_master.update', ['item_master' => $item->id]), $data)
@@ -161,6 +162,7 @@ class ItemMasterUpdateTest extends TestCase
         $response = $this->actingAs(User::find(1));
         $data = ItemMaster::factory()->make()->toArray();
         $item = Auth::user()->item_masters()->create($data);
+        $data['category'] = 2;
         $data['price'] = -1;
         $response = $this
             ->put(route('item_master.update', ['item_master' => $item->id]), $data)
@@ -176,6 +178,7 @@ class ItemMasterUpdateTest extends TestCase
         $response = $this->actingAs(User::find(1));
         $data = ItemMaster::factory()->make()->toArray();
         $item = Auth::user()->item_masters()->create($data);
+        $data['category'] = 2;
         $data['price'] = 0;
         $response = $this
             ->put(route('item_master.update', ['item_master' => $item->id]), $data)
@@ -191,9 +194,10 @@ class ItemMasterUpdateTest extends TestCase
         $response = $this->actingAs(User::find(1));
         $data = ItemMaster::factory()->make()->toArray();
         $item = Auth::user()->item_masters()->create($data);
+        $data['category'] = 2;
         $data['price'] = 1000000;
         $response = $this
-            ->put(route('item_master.update', ['item_master' => $item->id]), $data)
+        ->put(route('item_master.update', ['item_master' => $item->id]), $data)
             ->assertInValid(['price' => '価格には、0から、999999までの数字を指定してください。']);
     }
 
@@ -206,6 +210,7 @@ class ItemMasterUpdateTest extends TestCase
         $response = $this->actingAs(User::find(1));
         $data = ItemMaster::factory()->make()->toArray();
         $item = Auth::user()->item_masters()->create($data);
+        $data['category'] = 2;
         $data['price'] = '１０００';
         $response = $this
             ->put(route('item_master.update', ['item_master' => $item->id]), $data)

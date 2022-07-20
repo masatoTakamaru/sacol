@@ -32,10 +32,10 @@
                     <th>4科目</th>
                 </tr>
                 <tr>
-                    <td><input class="rounded" type="number" name="price[1]" min="0" max="999999" value="{{ old('p1') ?? $qprices->where('qprice', 1)->first()->price }}"></input></td>
-                    <td><input class="rounded" type="number" name="price[2]" min="0" max="999999" value="{{ old('p2') ?? $qprices->where('qprice', 2)->first()->price }}"></input></td>
-                    <td><input class="rounded" type="number" name="price[3]" min="0" max="999999" value="{{ old('p3') ?? $qprices->where('qprice', 3)->first()->price }}"></input></td>
-                    <td><input class="rounded" type="number" name="price[4]" min="0" max="999999" value="{{ old('p4') ?? $qprices->where('qprice', 4)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[1]" min="0" max="999999" value="{{ old('price[1]') ?? $qprices->where('qprice', 1)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[2]" min="0" max="999999" value="{{ old('price[2]') ?? $qprices->where('qprice', 2)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[3]" min="0" max="999999" value="{{ old('price[3]') ?? $qprices->where('qprice', 3)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[4]" min="0" max="999999" value="{{ old('price[4]') ?? $qprices->where('qprice', 4)->first()->price }}"></input></td>
                 </tr>
                 <tr>
                     <th>5科目</th>
@@ -44,10 +44,10 @@
                     <th>8科目</th>
                 </tr>
                 <tr>
-                    <td><input class="rounded" type="number" name="price[5]" min="0" max="999999" value="{{ old('p5') ?? $qprices->where('qprice', 5)->first()->price }}"></input></td>
-                    <td><input class="rounded" type="number" name="price[6]" min="0" max="999999" value="{{ old('p6') ?? $qprices->where('qprice', 6)->first()->price }}"></input></td>
-                    <td><input class="rounded" type="number" name="price[7]" min="0" max="999999" value="{{ old('p7') ?? $qprices->where('qprice', 7)->first()->price }}"></input></td>
-                    <td><input class="rounded" type="number" name="price[8]" min="0" max="999999" value="{{ old('p8') ?? $qprices->where('qprice', 8)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[5]" min="0" max="999999" value="{{ old('price[5]') ?? $qprices->where('qprice', 5)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[6]" min="0" max="999999" value="{{ old('price[6]') ?? $qprices->where('qprice', 6)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[7]" min="0" max="999999" value="{{ old('price[7]') ?? $qprices->where('qprice', 7)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[8]" min="0" max="999999" value="{{ old('price[8]') ?? $qprices->where('qprice', 8)->first()->price }}"></input></td>
                 </tr>
                 <tr>
                     <th>9科目</th>
@@ -56,11 +56,22 @@
                     <th>12科目</th>
                 </tr>
                 <tr>
-                    <td><input class="rounded" type="number" name="price[9]" min="0" max="999999" value="{{ old('p9') ?? $qprices->where('qprice', 9)->first()->price }}"></input></td>
-                    <td><input class="rounded" type="number" name="price[10]" min="0" max="999999" value="{{ old('p10') ?? $qprices->where('qprice', 10)->first()->price }}"></input></td>
-                    <td><input class="rounded" type="number" name="price[11]" min="0" max="999999" value="{{ old('p11') ?? $qprices->where('qprice', 11)->first()->price }}"></input></td>
-                    <td><input class="rounded" type="number" name="price[12]" min="0" max="999999" value="{{ old('p12') ?? $qprices->where('qprice', 12)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[9]" min="0" max="999999" value="{{ old('price[9]') ?? $qprices->where('qprice', 9)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[10]" min="0" max="999999" value="{{ old('price[10]') ?? $qprices->where('qprice', 10)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[11]" min="0" max="999999" value="{{ old('price[11]') ?? $qprices->where('qprice', 11)->first()->price }}"></input></td>
+                    <td><input class="rounded" type="number" name="price[12]" min="0" max="999999" value="{{ old('price[12]') ?? $qprices->where('qprice', 12)->first()->price }}"></input></td>
                 </tr>
+                @if ($errors->any())
+                    <tr>
+                        <td colspan="4">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                    <li class="text-red-600">{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </td>
+                    </tr>
+                @endif
             </tbody>
             </table>
         </div>

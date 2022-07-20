@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\Qprice;
+use App\Http\Requests\QpriceRequest;
 
 class QpriceController extends Controller
 {
@@ -18,7 +19,23 @@ class QpriceController extends Controller
     public function edit($grade)
     {
         $user = Auth::user();
-        $qprices = $user->qprices->where('grade', $grade);
+        //初期データがない場合新規作成
+        if(!$user->qprices->count()) {
+            $data = [];
+            for ($g = 0; $g <= 15; $g++) {
+                for ($q = 1; $q <= 12; $q++) {
+                    array_push($data, [
+                        'grade' => $g,
+                        'qprice' => $q,
+                        'price' => 0,
+                    ]);
+                }
+            }
+            $user->qprices()->createMany($data);
+        }
+
+        $qprices = $user->qprices()->where('grade', $grade)->get();
+
         return view('qprice.edit', [
             'qprices' => $qprices,
             'grades' => $this->grades,
@@ -26,7 +43,7 @@ class QpriceController extends Controller
         ]);
     }
 
-    public function update(Request $request, $grade)
+    public function update(QpriceRequest $request, $grade)
     {
         $user = Auth::user();
         $qprices = $user->qprices->where('grade', $grade);
