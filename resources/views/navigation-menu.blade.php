@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <img src="{{ secure_asset('fabicon-24x24.webp') }}">
+                        <img src="{{ asset('fabicon-24x24.webp') }}">
                     </a>
                 </div>
 
