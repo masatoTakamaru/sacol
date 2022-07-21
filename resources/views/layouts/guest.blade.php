@@ -15,7 +15,7 @@
 
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
-        <link rel="stylesheet" href="{{ asset('css/sub.css') }}">
+        <link rel="stylesheet" href="{{ secure_asset('css/sub.css') }}">
         <script src="https://cdn.tailwindcss.com"></script>
 
     </head>

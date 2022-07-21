@@ -12,9 +12,9 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/sub.css') }}">
+        <link rel="stylesheet" href="{{ secure_asset('css/sub.css') }}">
         <script src="https://cdn.tailwindcss.com"></script>
-        <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+        <script src="{{ secure_asset('js/jquery-3.6.0.min.js') }}"></script>
 
         @livewireStyles
 
