@@ -15,14 +15,11 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <p>#contents</p>
+    <div class="container m-6">
     </div>
     <div class="home-footer">
         <div class="flex justify-end">
             <ul class="footer-list mr-4">
-                <li>プライバシーポリシー</li>
-                <li>お問い合わせ</li>
                 <li>powered by mmsankosho 2022</li>
             </ul>
         </div>
