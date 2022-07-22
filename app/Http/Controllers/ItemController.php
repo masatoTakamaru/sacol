@@ -212,6 +212,13 @@ class ItemController extends Controller
                 'price' => ['required', 'integer', 'between:0,999999'],
                 'description' => ['nullable', 'max:50'],
                 ]);
+        } elseif ($request->category == 1) {
+            $validated = $request->validate([
+                'code' => ['required', 'integer', 'between:1,9999'],
+                'category' => ['required', 'integer', 'between:1,4'],
+                'name' => ['required', 'max:20'],
+                'description' => ['nullable', 'max:50'],
+                ]);
         } else {
             $validated = $request->validate([
                 'code' => ['required', 'integer', 'between:1,9999'],
