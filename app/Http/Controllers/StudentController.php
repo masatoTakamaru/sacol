@@ -23,7 +23,7 @@ class StudentController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $students = $user->students->where('expired_flg', null);
+        $students = $user->students->where('expired_flg', false);
         return view('student.index', [
             'students' => $students,
             'grades' => $this->grades,
@@ -65,10 +65,17 @@ class StudentController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        $student = $user->students()->find((int) Hashids::decode($id)[0]);
+        $st = $user->students()->find((int) Hashids::decode($id)[0]);
+        $family_members = $user->students()
+            ->where([
+                ['family_group', $st->family_group],
+                ['id', '<>', $st->id],
+            ])
+            ->get();
         return view('student.show', [
-            'st' => $student,
+            'st' => $st,
             'grades' => $this->grades,
+            'family_members' => $family_members,
         ]);
     }
 

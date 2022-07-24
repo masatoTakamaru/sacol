@@ -218,6 +218,91 @@ class ItemUpdateTest extends TestCase
     */
     public function 従量課金型科目の科目名が変更できる()
     {
+        $this->item->category = 1;
+        $response = $this
+            ->put(route('item.update', ['item'=>$this->item->id]), [
+                'code' => $this->item->code,
+                'category' => $this->item->category,
+                'name' => 'テスト科目名',
+                'description' => $this->item->description,    
+            ])
+            ->assertValid();
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 従量課金型科目の科目名が空白は不可()
+    {
+        $this->item->category = 1;
+        $response = $this
+            ->put(route('item.update', ['item'=>$this->item->id]), [
+                'code' => $this->item->code,
+                'category' => $this->item->category,
+                'name' => '',
+                'description' => $this->item->description,    
+            ])
+            ->assertInValid(['name' => '科目名は、必ず指定してください。']);
+    }
+
+        /**
+     * @test
+     * @group item
+    */
+    public function 従量課金型科目の科目名が21字以上は不可()
+    {
+        $this->item->category = 1;
+        $response = $this
+            ->put(route('item.update', ['item'=>$this->item->id]), [
+                'code' => $this->item->code,
+                'category' => $this->item->category,
+                'name' => str_repeat('あ', 21),
+                'description' => $this->item->description,    
+            ])
+            ->assertInValid(['name' => '科目名は、20文字以下にしてください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 従量課金型科目の摘要が空白は可()
+    {
+        $this->item->category = 1;
+        $response = $this
+            ->put(route('item.update', ['item'=>$this->item->id]), [
+                'code' => $this->item->code,
+                'category' => $this->item->category,
+                'name' => $this->item->name,
+                'description' => '',    
+            ])
+            ->assertValid();
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 従量課金型科目の摘要が51字以上は不可()
+    {
+        $this->item->category = 1;
+        $response = $this
+            ->put(route('item.update', ['item'=>$this->item->id]), [
+                'code' => $this->item->code,
+                'category' => $this->item->category,
+                'name' => $this->item->name,
+                'description' => str_repeat('あ', 51),    
+            ])
+            ->assertInValid(['description' => '摘要は、50文字以下にしてください。']);
+    }
+
+    /**
+     * @test
+     * @group item
+    */
+    public function 従量課金型科目合計の科目名が変更できる()
+    {
         $this->item->code = 0;
         $this->item->category = 0;
         $response = $this
@@ -235,7 +320,7 @@ class ItemUpdateTest extends TestCase
      * @test
      * @group item
     */
-    public function 従量課金型科目の科目名が空白は不可()
+    public function 従量課金型科目合計の科目名が空白は不可()
     {
         $this->item->code = 0;
         $this->item->category = 0;
@@ -254,7 +339,7 @@ class ItemUpdateTest extends TestCase
      * @test
      * @group item
     */
-    public function 従量課金型科目の科目名が21字以上は不可()
+    public function 従量課金型科目合計の科目名が21字以上は不可()
     {
         $this->item->code = 0;
         $this->item->category = 0;
@@ -273,7 +358,7 @@ class ItemUpdateTest extends TestCase
      * @test
      * @group item
     */
-    public function 従量課金型科目の金額が変更できる()
+    public function 従量課金型科目合計の金額が変更できる()
     {
         $this->item->code = 0;
         $this->item->category = 0;
@@ -292,7 +377,7 @@ class ItemUpdateTest extends TestCase
      * @test
      * @group item
     */
-    public function 従量課金型科目の金額が0は可()
+    public function 従量課金型科目合計の金額が0は可()
     {
         $this->item->code = 0;
         $this->item->category = 0;
@@ -311,7 +396,7 @@ class ItemUpdateTest extends TestCase
      * @test
      * @group item
     */
-    public function 従量課金型科目の金額が負の数は不可()
+    public function 従量課金型科目合計の金額が負の数は不可()
     {
         $this->item->code = 0;
         $this->item->category = 0;
@@ -330,7 +415,7 @@ class ItemUpdateTest extends TestCase
      * @test
      * @group item
     */
-    public function 従量課金型科目の金額が1000000以上は不可()
+    public function 従量課金型科目合計の金額が1000000以上は不可()
     {
         $this->item->code = 0;
         $this->item->category = 0;
@@ -349,7 +434,7 @@ class ItemUpdateTest extends TestCase
      * @test
      * @group item
     */
-    public function 従量課金型科目の金額が全角文字は不可()
+    public function 従量課金型科目合計の金額が全角文字は不可()
     {
         $this->item->code = 0;
         $this->item->category = 0;
@@ -368,7 +453,7 @@ class ItemUpdateTest extends TestCase
      * @test
      * @group item
     */
-    public function 従量課金型科目の摘要が空白は可()
+    public function 従量課金型科目合計の摘要が空白は可()
     {
         $this->item->code = 0;
         $this->item->category = 0;
@@ -387,7 +472,7 @@ class ItemUpdateTest extends TestCase
      * @test
      * @group item
     */
-    public function 従量課金型科目の摘要が51字以上は可()
+    public function 従量課金型科目合計の摘要が51字以上は不可()
     {
         $this->item->code = 0;
         $this->item->category = 0;

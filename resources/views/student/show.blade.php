@@ -4,48 +4,61 @@
     </x-slot>
     <div class="flex justify-end">
         <a class="text-blue-500 mr-4" href="{{ route('student.edit', ['student' => Hashids::encode($st->id)]) }}">編集</a>
+        <a class="text-blue-500 mr-4" href="{{ route('family_group.edit', ['student' => Hashids::encode($st->id)]) }}">家族設定</a>
         <a class="text-blue-500" href="{{ route('student.index') }}">生徒の一覧に戻る</a>
     </div>
     <div class="flex justify-center">
     <table class="mb-12">
     <tbody>
-    <tr>
-        <td class="pr-4">学年</td>
-        <td class="pr-2">{{ $grades[$st->grade] }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">名前</td>
-        <td class="pr-2">{{ $st->family_name }}&nbsp;{{ $st->given_name }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">フリガナ</td>
-        <td class="pr-2">{{ $st->family_name_kana }}&nbsp;{{ $st->given_name_kana }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">性別</td>
-        <td class="pr-2">{{ $st->gender }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">メールアドレス</td>
-        <td class="pr-2">{{ $st->email }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">備考</td>
-        <td>{{ $st->remarks }}</td>
-    </tr>
-    <tr>
-        <td class="pr-4">入会日</td>
-        <td>{{ $st->registered_date }}</td>
-    </tr>
-    @if($st->expired_flg)
         <tr>
-            <td class="pr-4">退会日</td>
-            <td>{{ $st->expired_date }}</td>
+            <td class="pr-4">学年</td>
+            <td class="pr-2">{{ $grades[$st->grade] }}</td>
         </tr>
-    @endif    
+        <tr>
+            <td class="pr-4">名前</td>
+            <td class="pr-2">{{ $st->family_name }}&nbsp;{{ $st->given_name }}</td>
+        </tr>
+        <tr>
+            <td class="pr-4">フリガナ</td>
+            <td class="pr-2">{{ $st->family_name_kana }}&nbsp;{{ $st->given_name_kana }}</td>
+        </tr>
+        <tr>
+            <td class="pr-4">性別</td>
+            <td class="pr-2">{{ $st->gender }}</td>
+        </tr>
+        <tr>
+            <td class="pr-4">メールアドレス</td>
+            <td class="pr-2">{{ $st->email }}</td>
+        </tr>
+        <tr>
+            <td class="pr-4">備考</td>
+            <td>{{ $st->remarks }}</td>
+        </tr>
+        <tr>
+            <td class="pr-4">入会日</td>
+            <td>{{ $st->registered_date }}</td>
+        </tr>
+        @if($st->expired_flg)
+            <tr>
+                <td class="pr-4">退会日</td>
+                <td>{{ $st->expired_date }}</td>
+            </tr>
+        @endif
+        {{-- 家族の表示 --}}
+        <tr>
+            <td>家族</td>
+            <td>
+                <ul>
+                    @foreach ($family_members as $fm)
+                        <li><a class="text-blue-500" href="{{ route('student.show', ['student' => Hashids::encode($fm->id)]) }}">{{ $fm->family_name }}&emsp;{{ $fm->given_name }}</a>（{{ $grades[$fm->grade] }}）</li>
+                    @endforeach
+                </ul>
+            <td>
+        </tr>
     </tbody>
     </table>
     </div>
+    {{-- 生徒の退会  --}}
     @if ($st->expired_flg)
         <form action="{{ route('student.unexpired_update',['student' => $st->id]) }}" method="POST">
             @method('PUT')
@@ -76,6 +89,7 @@
             </div>
         </form>
     @endif
+    {{-- 生徒の削除 --}}
     <hr class="mt-4">
     <form action="{{ route('student.destroy',['student' => $st->id]) }}" method="POST">
         @method('DELETE')

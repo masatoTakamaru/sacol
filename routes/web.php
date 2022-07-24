@@ -32,6 +32,14 @@ Route::put('/student/{student}/unexpired_update',
 Route::resource('/student', 'App\Http\Controllers\StudentController')
     ->middleware(['auth']);
 
+Route::get('/family_group/{student}',
+    [App\Http\Controllers\FamilyGroupController::class, 'edit'])
+    ->middleware(['auth'])->name('family_group.edit');
+
+Route::put('/family_group/{student}',
+    [App\Http\Controllers\FamilyGroupController::class, 'update'])
+    ->middleware(['auth'])->name('family_group.update');
+
 Route::get('/item/{sheet}',
     [App\Http\Controllers\ItemController::class, 'index'])
     ->middleware(['auth'])->name('item.index');

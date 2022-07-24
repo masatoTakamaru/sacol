@@ -57,6 +57,41 @@ a, h1, h2, h3, li, p, th, td {
   background-color: #276749;
 }
 
+.btn-sm {
+  color: #fff;
+  font-weight: 500;
+  background-color: #2f855a;
+  transition: 0.3s;
+  border-radius: 0.25rem;
+}
+
+.btn-sm:visited {
+  color: #2f855a;
+}
+
+.btn-sm:hover {
+  color: #fff;
+  opacity: 0.7;
+}
+
+.btn-sm-white {
+  color: #2f855a;
+  font-weight: 500;
+  background-color: white;
+  border: solid 1px #2f855a;
+  transition: 0.3s;
+  border-radius: 0.25rem;
+}
+
+.btn-sm-white:visited {
+  color: #2f855a;
+}
+
+.btn-sm-white:hover {
+  color: #fff;
+  background-color: #276749;
+}
+
 .btn-search {
   color: #2f855a;
   font-weight: 700;
