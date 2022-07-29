@@ -12,9 +12,10 @@
                 <input type="hidden" name="year" value="{{ $sheets->first()->year }}"></input>
                 <input type="hidden" name="month" value="{{ $sheets->first()->month }}"></input>
 
-                <button class="btn mr-4 py-2 px-6 text-sm"><input type="submit" value="帳票の新規作成"></input></button>
+                <button class="btn mr-4 py-2 px-6 text-sm"><input type="submit" value="帳票の新規作成" disabled></input></button>
             </form>
         </div>
+        <div><p class="text-green-500">サンプルのため帳票の新規作成および削除はできません。</p></div>
         <div class="flex justify-center">
             <table>
                 <thead>
@@ -38,7 +39,7 @@
                                         @csrf
                                         @method('DELETE')
 
-                                        <button class="btn-white mr-4 py-1 px-6 text-sm"><input type="submit" value="削除"></input></button>
+                                        <button class="btn-white mr-4 py-1 px-6 text-sm"><input type="submit" value="削除" disabled></input></button>
                                     </form>
                                 </td>
                             @endif

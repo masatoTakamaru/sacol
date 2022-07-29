@@ -22,6 +22,27 @@ a, h1, h2, h3, li, p, th, td {
   background-color: rgba(255,255,255,0.8);
 }
 
+.introduction {
+  max-width: 1000px;
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0px;
+}
+
+.intro-card {
+  width:480px;
+  margin: 10px;
+}
+
+.intro-card h2 {
+  margin: 8px 0;
+}
+
+.intro-img {
+  border-radius: 16px;
+}
+
 .btn {
   color: #fff;
   font-weight: 700;
