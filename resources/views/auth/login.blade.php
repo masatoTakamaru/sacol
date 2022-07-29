@@ -43,6 +43,9 @@
                     {{ __('Log in') }}
                 </x-jet-button>
             </div>
+            <div class="mt-8">
+                <p class="text-green-500">メールアドレス 1@gmail.com パスワード 11111111 でログインして下さい。</p>
+            </div>
         </form>
     </x-jet-authentication-card>
 </x-guest-layout>

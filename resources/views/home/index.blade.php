@@ -11,11 +11,15 @@
                 @endif
             </div>
             <div class="flex justify-center mt-6">
-                <a href="{{ route('register') }}" class="btn-white btn-register py-2 text-center">新規登録はこちらから</a>
+                <!--
+                <a href="{{ route('register') }}" class="btn-white btn-register py-2 text-center" disabled>新規登録はこちらから</a>
+                -->
+                <a class="btn-white btn-register py-2 text-center" disabled>新規登録はこちらから</a>
             </div>
         </div>
     </div>
     <div class="container m-6">
+        このサイトはサンプルのためユーザーの新規登録はできません。ログインして動作を確認して下さい。
     </div>
     <div class="home-footer">
         <div class="flex justify-end">

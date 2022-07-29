@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Http\Requests\StudentRequest;
 use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class StudentController extends Controller
 {
@@ -53,6 +54,7 @@ class StudentController extends Controller
             'given_name_kana' => $request->given_name_kana,
             'gender' => $request->gender,
             'grade' => $request->grade,
+            'family_group' => Str::uuid(),
             'email' => $request->email,
             'remarks' => $request->remarks,
         ]);
