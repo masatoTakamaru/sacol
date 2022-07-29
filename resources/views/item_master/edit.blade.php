@@ -32,9 +32,14 @@
         <div class="flex justify-between items-center mt-10">
             <h2 class="mr-4 text-red-500">科目の削除</h2>
             <p class="mr-6">科目は一覧から完全に削除され、もとに戻せません。</p>
-            <button id="item-master-delete" class="btn-white px-8 py-2"><input type="submit" value="完全に削除する"></button>
+            <button id="item-master-delete" class="btn-white px-8 py-2"><input type="submit" value="完全に削除する" disabled></button>
         </div>
     </form>
+
+    <div class="mt-8">
+        <p class="text-green-500">サンプルのため削除はできません。</p>
+    </div>
+
 
     <script>
         //生徒の削除：確認メッセージ

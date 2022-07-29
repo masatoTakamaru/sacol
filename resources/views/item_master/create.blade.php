@@ -17,8 +17,12 @@
         </div>
 
         <div class="flex justify-center mt-6">
-            <button class="btn px-8 py-2 mr-6"><input type="submit" value="登録する"></button>
+            <button class="btn px-8 py-2 mr-6"><input type="submit" value="登録する" disabled></button>
             <a class="btn-white px-6 py-2" href="{{ route('item_master.index') }}">キャンセル</a>
+        </div>
+
+        <div class="mt-8">
+            <p class="text-green-500">サンプルのため新規登録はできません。</p>
         </div>
 
     </form>

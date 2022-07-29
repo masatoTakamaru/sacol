@@ -85,7 +85,7 @@
                 <p class="text-red-600">{{ $errors->first('expired_date') }}</p>
             @endif
             <div class="flex justify-end mt-3">
-                <button class="btn-white px-8 py-2"><input type="submit" value="退会者名簿に移動する"></button>
+                <button class="btn-white px-8 py-2"><input type="submit" value="退会者名簿に移動する" disabled></button>
             </div>
         </form>
     @endif
@@ -97,7 +97,10 @@
         <div class="flex justify-between items-center mt-10">
             <h2 class="mr-4 text-red-500">生徒の削除</h2>
             <p class="mr-6">生徒は一覧から完全に削除され、もとに戻せません。</p>
-            <button id="student-delete" class="btn-white px-8 py-2"><input type="submit" value="完全に削除する"></button>
+            <button id="student-delete" class="btn-white px-8 py-2"><input type="submit" value="完全に削除する" disabled></button>
+        </div>
+        <div class="mt-8">
+            <p class="text-green-500">サンプルのため退会および削除はできません。</p>
         </div>
     </form>
 
